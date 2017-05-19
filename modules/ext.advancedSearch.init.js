@@ -69,8 +69,7 @@
 			placeholder: '"…"',
 			formatter: function ( val ) {
 				return enforceQuotes( val );
-			},
-			parser: /(?:^| +)"((?:\\.|[^"\\])+)"(?= |$)/gi
+			}
 		},
 		{
 			group: 'text',
@@ -78,8 +77,7 @@
 			placeholder: '…~2',
 			formatter: function ( val ) {
 				return optionalQuotes( val ) + '~2';
-			},
-			parser: /(?:^| +)("(?:\\.|[^"\\])+"|[^\s":]+)~2(?= |$)/gi
+			}
 		},
 		{
 			group: 'text',
@@ -87,8 +85,7 @@
 			placeholder: '-…',
 			formatter: function ( val ) {
 				return '-' + optionalQuotes( val );
-			},
-			parser: /(?:^| +)-("(?:\\.|[^"\\])+"|[^\s":]+)(?= |$)/gi
+			}
 		},
 		{
 			group: 'text',
@@ -96,8 +93,7 @@
 			placeholder: 'hastemplate:…',
 			formatter: function ( val ) {
 				return 'hastemplate:' + optionalQuotes( val );
-			},
-			parser: /(?:^| +)\bhastemplate:("(?:\\.|[^"\\])+"|[^\s"]+)/gi
+			}
 		},
 		{
 			group: 'text',
@@ -105,8 +101,7 @@
 			placeholder: 'insource:…',
 			formatter: function ( val ) {
 				return 'insource:' + ( /^\/.*\/$/.test( val ) ? val : optionalQuotes( val ) );
-			},
-			parser: /(?:^| +)\binsource:(\/\S+\/|"(?:\\.|[^"\\])+"|[^\s"]+)/gi
+			}
 		},
 
 		// Titles and headlines
@@ -118,7 +113,6 @@
 			formatter: function ( val ) {
 				return 'prefix:' + val;
 			},
-			parser: /(?:^| +)\bprefix:(.+)/gi,
 			greedy: true
 		},
 		{
@@ -127,8 +121,7 @@
 			placeholder: 'intitle:…',
 			formatter: function ( val ) {
 				return 'intitle:' + optionalQuotes( val );
-			},
-			parser: /(?:^| +)\bintitle:("(?:\\.|[^"\\])+"|[^\s"]+)/gi
+			}
 		},
 
 		// Categories
@@ -141,8 +134,7 @@
 			 }, */
 			formatter: function ( val ) {
 				return 'deepcat:' + optionalQuotes( val );
-			},
-			parser: /(?:^| +)\bdeepcat:("(?:\\.|[^"\\])+"|\S+)/gi
+			}
 		},
 		{
 			group: 'categories',
@@ -153,18 +145,16 @@
 			 }, */
 			formatter: function ( val ) {
 				return 'deepcat:' + optionalQuotes( val );
-			},
-			parser: /(?:^| +)\bdeepcat:("(?:\\.|[^"\\])+"|\S+)/gi
+			}
 		},
 		/* {
-		 group: 'categories',
-		 id: 'incategory',
-		 placeholder: 'incategory:…',
-		 formatter: function ( val ) {
-		 return 'incategory:' + optionalQuotes( val );
-		 },
-		 parser: /(?:^| +)\bincategory:("(?:\\.|[^"\\])+"|\S+)/gi
-		 }, */
+			group: 'categories',
+			id: 'incategory',
+			placeholder: 'incategory:…',
+			formatter: function ( val ) {
+				return 'incategory:' + optionalQuotes( val );
+			}
+		}, */
 
 		// Files
 		// filebits:…
@@ -241,8 +231,7 @@
 				} );
 				return types;
 			},
-			requiredNamespace: 6,
-			parser: /(?:^| +)\bfile(?:mime|type):(?:\w{3,}\/)?(\w{3,})/gi
+			requiredNamespace: 6
 		},
 		{
 			group: 'files',
@@ -251,8 +240,7 @@
 			formatter: function ( val ) {
 				return 'filew:' + formatSizeConstraint( val );
 			},
-			requiredNamespace: 6,
-			parser: /(?:^| +)\bfilew(?:idth)?\b:?([<>\d.,]+)/gi
+			requiredNamespace: 6
 		},
 		{
 			group: 'files',
@@ -261,19 +249,17 @@
 			formatter: function ( val ) {
 				return 'fileh:' + formatSizeConstraint( val );
 			},
-			requiredNamespace: 6,
-			parser: /(?:^| +)\bfileh(?:eight)?\b:?([<>\d.,]+)/gi
+			requiredNamespace: 6
 		}
 		/* {
-		 group: 'files',
-		 id: 'fileres',
-		 placeholder: 'fileres:…',
-		 formatter: function ( val ) {
-		 return 'fileres:' + formatSizeConstraint( val );
-		 },
-		 requiredNamespace: 6,
-		 parser: /(?:^| +)\bfileres\b:?([<>\d.,]+)/gi
-		 } */
+			group: 'files',
+			id: 'fileres',
+			placeholder: 'fileres:…',
+			formatter: function ( val ) {
+				return 'fileres:' + formatSizeConstraint( val );
+			},
+			requiredNamespace: 6
+		} */
 
 		// Ordering
 		// prefer-recent:…
@@ -365,44 +351,10 @@
 	}
 
 	/**
-	 * @param {string} fullQuery
-	 * @return {string}
-	 */
-	function parseSearchOptions( fullQuery ) {
-		[ true, false ].forEach( function ( parseGreedyOptions ) {
-			for ( var i = advancedOptions.length; i--; ) {
-				var option = advancedOptions[ i ],
-					isGreedy = option.greedy ? true : false;
-
-				if ( isGreedy !== parseGreedyOptions ) {
-					continue;
-				}
-
-				var $field = $( '#advancedSearchOption-' + option.id + ' input' );
-
-				if ( !$field.length || $.trim( $field.val() ) ) {
-					continue;
-				}
-
-				var match = lastMatch( option.parser, fullQuery );
-
-				if ( match ) {
-					fullQuery = fullQuery.slice( 0, match.index )
-						+ fullQuery.slice( match.index + match[ 0 ].length );
-					$field.val( trimQuotes( match[ 1 ] ) );
-				}
-			}
-		} );
-
-		return $.trim( fullQuery );
-	}
-
-	/**
 	 * @param {string} [fullQuery]
-	 * @param {boolean} [clean=false]
 	 * @return {string}
 	 */
-	function formatSearchOptions( fullQuery, clean ) {
+	function formatSearchOptions( fullQuery ) {
 		var greedyQuery = '';
 
 		fullQuery = fullQuery || '';
@@ -424,10 +376,6 @@
 					fullQuery += ' ' + option.formatter( val );
 				}
 
-				if ( clean === true ) {
-					$field.val( '' );
-				}
-
 				if ( option.requiredNamespace ) {
 					$( '#mw-search-ns' + option.requiredNamespace ).prop( 'checked', true );
 				}
@@ -437,9 +385,12 @@
 		return $.trim( fullQuery + greedyQuery );
 	}
 
-	mw.loader.using( [ 'oojs-ui' ], function () {
+	mw.loader.using( [ 'mediawiki.util', 'oojs-ui' ], function () {
 		var $search = $( 'form#search, form#powersearch' ),
+			$searchField = $search.find( 'input[name="search"]' ),
 			optionSets = {};
+
+		$searchField.val( mw.util.getParamValue( 'advancedSearchOption-original' ) );
 
 		advancedOptions.forEach( function ( option ) {
 			if ( option.enabled && !option.enabled() ) {
@@ -448,7 +399,10 @@
 
 			var id = 'advancedSearchOption-' + option.id;
 			var widget = new OO.ui.TextInputWidget( {
-				id: id
+				id: id,
+				// TODO: These names are to long.
+				name: id,
+				value: mw.util.getParamValue( id )
 			} );
 
 			if ( !optionSets[ option.group ] ) {
@@ -466,6 +420,11 @@
 		} );
 
 		var $allOptions = $( '<div class="advancedSearch-fieldContainer">' )
+			.append( $( '<input>' ).prop( {
+				name: 'advancedSearchOption-original',
+				type: 'hidden',
+				value: mw.util.getParamValue( 'advancedSearchOption-original' )
+			} ) )
 			.hide();
 
 		for ( var group in optionSets ) {
@@ -476,8 +435,7 @@
 			label: msg( 'advanced-search' )
 			// indicator: 'down'
 		} ).on( 'click', function () {
-			var $searchField = $search.find( 'input[name="search"]' ),
-				query = $searchField.val();
+			var query = $searchField.val();
 
 			$allOptions.toggle();
 
@@ -488,8 +446,6 @@
 					$topSearchField.val( '' );
 				}
 
-				query = parseSearchOptions( query );
-				$searchField.val( query );
 				advancedButton.setLabel( msg( 'advanced-search' ) );
 			} else {
 				advancedButton.setLabel( formatSearchOptions() || msg( 'advanced-search' ) );
@@ -515,9 +471,10 @@
 		$search.append( $advancedButton, $allOptions );
 
 		$search.on( 'submit', function () {
-			var $searchField = $( this ).find( 'input[name="search"]' ),
-				query = formatSearchOptions( $searchField.val(), true );
+			var originalQuery = $searchField.val(),
+				query = formatSearchOptions( originalQuery );
 
+			$( 'input[name="advancedSearchOption-original"]' ).val( originalQuery );
 			$searchField.val( query );
 			// Copy to the top-right search box for the sake of completeness
 			$( '#searchInput' ).val( query );
