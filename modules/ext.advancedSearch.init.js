@@ -71,7 +71,8 @@
 				return enforceQuotes( val );
 			},
 			init: function () {
-				return new OO.ui.TagMultiselectWidget( {} );
+				var widget = new OO.ui.TagMultiselectWidget( { allowArbitrary: true } );
+				return widget;
 			}
 		},
 		{
@@ -98,7 +99,15 @@
 				return 'hastemplate:' + optionalQuotes( val );
 			},
 			init: function () {
-				return new OO.ui.CapsuleMultiselectWidget( {} );
+				return new OO.ui.CapsuleMultiselectWidget( {
+					menu: {
+						items: [
+								new OO.ui.MenuOptionWidget( { data: 'infobox_nature', label: 'Infobox Nature' } ),
+								new OO.ui.MenuOptionWidget( { data: 'infobox_architecture', label: 'Infobox Architecture' } ),
+								new OO.ui.MenuOptionWidget( { data: 'commons_link', label: 'Link to Commons' } )
+							]
+					}
+				} );
 			}
 		},
 		{
