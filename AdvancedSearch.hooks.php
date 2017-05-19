@@ -14,7 +14,10 @@ class Hooks {
 	 * @param Skin $skin
 	 */
 	public static function onBeforePageDisplay( OutputPage $outputPage, Skin $skin ) {
-		$outputPage->addModules( 'ext.advancedSearch.init' );
+		// TODO: Is it ok to just compare this as a string?
+		if ( $outputPage->getTitle()->getFullText() === 'Special:Search' ) {
+			$outputPage->addModules( 'ext.advancedSearch.init' );
+		}
 	}
 
 }

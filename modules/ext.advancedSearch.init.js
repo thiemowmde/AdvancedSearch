@@ -341,22 +341,6 @@
 	}
 
 	/**
-	 * @param {RegExp|undefined} regexp
-	 * @param {string} val
-	 * @return {Array|boolean}
-	 */
-	function lastMatch( regexp, val ) {
-		var match,
-			result = false;
-
-		while ( regexp && ( match = regexp.exec( val ) ) ) {
-			result = match;
-		}
-
-		return result;
-	}
-
-	/**
 	 * @param {string} [fullQuery]
 	 * @return {string}
 	 */
@@ -391,103 +375,92 @@
 		return $.trim( fullQuery + greedyQuery );
 	}
 
-	mw.loader.using( [ 'mediawiki.util', 'oojs-ui' ], function () {
-		var $search = $( 'form#search, form#powersearch' ),
-			$searchField = $search.find( 'input[name="search"]' ),
-			optionSets = {};
+	var $search = $( 'form#search, form#powersearch' ),
+		$searchField = $search.find( 'input[name="search"]' ),
+		optionSets = {};
 
-		$searchField.val( mw.util.getParamValue( 'advancedSearchOption-original' ) );
+	$searchField.val( mw.util.getParamValue( 'advancedSearchOption-original' ) );
 
-		advancedOptions.forEach( function ( option ) {
-			if ( option.enabled && !option.enabled() ) {
-				return;
-			}
-
-			var widgetInit = option.init || function () {
-				var id = 'advancedSearchOption-' + option.id;
-				return new OO.ui.TextInputWidget( {
-					id: id,
-					// TODO: These names are to long.
-					name: id,
-					value: mw.util.getParamValue( id )
-				} );
-			},
-			widget = widgetInit();
-
-			if ( !optionSets[ option.group ] ) {
-				optionSets[ option.group ] = new OO.ui.FieldsetLayout( {
-					label: msg( option.group )
-				} );
-			}
-
-			optionSets[ option.group ].addItems( [
-				new OO.ui.FieldLayout( widget, {
-					label: msg( option.id ),
-					align: 'right'
-				} )
-			] );
-		} );
-
-		var $allOptions = $( '<div class="advancedSearch-fieldContainer">' )
-			.append( $( '<input>' ).prop( {
-				name: 'advancedSearchOption-original',
-				type: 'hidden',
-				value: mw.util.getParamValue( 'advancedSearchOption-original' )
-			} ) )
-			.hide();
-
-		for ( var group in optionSets ) {
-			$allOptions.append( optionSets[ group ].$element );
+	advancedOptions.forEach( function ( option ) {
+		if ( option.enabled && !option.enabled() ) {
+			return;
 		}
 
-		var advancedButton = new OO.ui.ButtonWidget( {
-			label: msg( 'advanced-search' )
-			// indicator: 'down'
-		} ).on( 'click', function () {
-			var query = $searchField.val();
+		var widgetInit = option.init || function () {
+			var id = 'advancedSearchOption-' + option.id;
+			return new OO.ui.TextInputWidget( {
+				id: id,
+				// TODO: These names are to long.
+				name: id,
+				value: mw.util.getParamValue( id )
+			} );
+		},
+		widget = widgetInit();
 
-			$allOptions.toggle();
+		if ( !optionSets[ option.group ] ) {
+			optionSets[ option.group ] = new OO.ui.FieldsetLayout( {
+				label: msg( option.group )
+			} );
+		}
 
-			if ( $allOptions.is( ':visible' ) ) {
-				// Clean the top-right search box to avoid confusion
-				var $topSearchField = $( '#searchInput' );
-				if ( $topSearchField.val() === query ) {
-					$topSearchField.val( '' );
-				}
+		optionSets[ option.group ].addItems( [
+			new OO.ui.FieldLayout( widget, {
+				label: msg( option.id ),
+				align: 'right'
+			} )
+		] );
+	} );
 
-				advancedButton.setLabel( msg( 'advanced-search' ) );
-			} else {
-				advancedButton.setLabel( formatSearchOptions() || msg( 'advanced-search' ) );
-			}
-		} );
+	var $allOptions = $( '<div class="advancedSearch-fieldContainer">' )
+			.hide();
 
-		var $advancedButton = advancedButton.$element.css( {
-			clear: 'both',
-			display: 'block',
-			margin: 0,
-			'max-width': '50em',
-			'padding-top': '0.3em',
-			position: 'relative'
-		} );
-		$advancedButton.children().css( {
-			'background-image': 'url(//de.wikipedia.org/w/load.php?modules=oojs-ui.styles.indicators&image=down)',
-			'background-position': '99%',
-			'background-repeat': 'no-repeat',
-			'background-size': '18px',
-			display: 'block',
-			'text-align': 'left'
-		} );
-		$search.append( $advancedButton, $allOptions );
+	for ( var group in optionSets ) {
+		$allOptions.append( optionSets[ group ].$element );
+	}
 
-		$search.on( 'submit', function () {
-			var originalQuery = $searchField.val(),
-				query = formatSearchOptions( originalQuery );
+	var advancedButton = new OO.ui.ButtonWidget( {
+		label: msg( 'advanced-search' )
+		// indicator: 'down'
+	} ).on( 'click', function () {
+		$allOptions.toggle();
 
-			$( 'input[name="advancedSearchOption-original"]' ).val( originalQuery );
-			$searchField.val( query );
-			// Copy to the top-right search box for the sake of completeness
-			$( '#searchInput' ).val( query );
-		} );
+		if ( $allOptions.is( ':visible' ) ) {
+			advancedButton.setLabel( msg( 'advanced-search' ) );
+		} else {
+			advancedButton.setLabel( formatSearchOptions() || msg( 'advanced-search' ) );
+		}
+	} );
+
+	var $advancedButton = advancedButton.$element.css( {
+		clear: 'both',
+		display: 'block',
+		margin: 0,
+		'max-width': '50em',
+		'padding-top': '0.3em',
+		position: 'relative'
+	} );
+	$advancedButton.children().css( {
+		'background-image': 'url(//de.wikipedia.org/w/load.php?modules=oojs-ui.styles.indicators&image=down)',
+		'background-position': '99%',
+		'background-repeat': 'no-repeat',
+		'background-size': '18px',
+		display: 'block',
+		'text-align': 'left'
+	} );
+	$search.append( $advancedButton, $allOptions );
+
+	$search.on( 'submit', function () {
+		var compiledQuery = formatSearchOptions( $searchField.val() ),
+			$compiledSearchField = $( '<input>' ).prop( {
+				name: $searchField.prop( 'name' ),
+				type: 'hidden'
+			} ).val( compiledQuery );
+
+		$searchField.prop( 'name', 'advancedSearchOption-original' )
+			.after( $compiledSearchField );
+
+		// Copy to the top-right search box for the sake of completeness
+		$( '#searchInput' ).val( compiledQuery );
 	} );
 
 	mw.loader.load( '//de.wikipedia.org/w/index.php?title=MediaWiki:Gadget-DeepCat.js&action=raw&ctype=text/javascript' );
