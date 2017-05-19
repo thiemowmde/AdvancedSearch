@@ -69,6 +69,9 @@
 			placeholder: '"…"',
 			formatter: function ( val ) {
 				return enforceQuotes( val );
+			},
+			init: function () {
+				return new OO.ui.TagMultiselectWidget( {} );
 			}
 		},
 		{
@@ -93,6 +96,9 @@
 			placeholder: 'hastemplate:…',
 			formatter: function ( val ) {
 				return 'hastemplate:' + optionalQuotes( val );
+			},
+			init: function () {
+				return new OO.ui.CapsuleMultiselectWidget( {} );
 			}
 		},
 		{
@@ -360,7 +366,7 @@
 		fullQuery = fullQuery || '';
 
 		advancedOptions.forEach( function ( option ) {
-			var $field = $( '#advancedSearchOption-' + option.id + ' input');
+			var $field = $( '#advancedSearchOption-' + option.id + ' input' );
 
 			if ( !$field.length ) {
 				return;
@@ -397,13 +403,16 @@
 				return;
 			}
 
-			var id = 'advancedSearchOption-' + option.id;
-			var widget = new OO.ui.TextInputWidget( {
-				id: id,
-				// TODO: These names are to long.
-				name: id,
-				value: mw.util.getParamValue( id )
-			} );
+			var widgetInit = option.init || function () {
+				var id = 'advancedSearchOption-' + option.id;
+				return new OO.ui.TextInputWidget( {
+					id: id,
+					// TODO: These names are to long.
+					name: id,
+					value: mw.util.getParamValue( id )
+				} );
+			},
+			widget = widgetInit();
 
 			if ( !optionSets[ option.group ] ) {
 				optionSets[ option.group ] = new OO.ui.FieldsetLayout( {
