@@ -461,22 +461,12 @@
 			optionSets[ option.group ].addItems( [
 				new OO.ui.FieldLayout( widget, {
 					label: msg( option.id ),
-					align: 'left'
+					align: 'right'
 				} )
 			] );
 		} );
 
-		var $allOptions = $( '<fieldset>' )
-			.css( {
-				background: 'linear-gradient(rgba(0, 0, 0, 0.1), #fff 0.5em)',
-				'border-color': '#c8ccd1',
-				'border-top': 0,
-				'box-sizing': 'border-box',
-				margin: 0,
-				'margin-top': '-1px',
-				'max-width': '50em',
-				padding: '0.2em 1em'
-			} )
+		var $allOptions = $( '<div class="advancedSearch-fieldContainer">' )
 			.hide();
 
 		for ( var group in optionSets ) {
