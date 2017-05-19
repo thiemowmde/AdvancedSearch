@@ -32,7 +32,7 @@
 	function trimQuotes( val ) {
 		val = val.replace( /^"((?:\\.|[^"\\])+)"$/, '$1' );
 		if ( !/^"/.test( val ) ) {
-			val = val.replace( /\\(.)/g, '$1' )
+			val = val.replace( /\\(.)/g, '$1' );
 		}
 		return val;
 	}
@@ -286,7 +286,7 @@
 	];
 
 	var i18n = {
-		'de': {
+		de: {
 			'advanced-search': 'Erweiterte Suchoptionen',
 
 			text: 'Text',
@@ -311,7 +311,7 @@
 			fileh: 'Dateihöhe in Pixel:',
 			fileres: 'Diagonalauflösung in Pixel:'
 		},
-		'en': {
+		en: {
 			'advanced-search': 'Advanced search options',
 
 			text: 'Text',
@@ -345,7 +345,7 @@
 	function msg( key ) {
 		var lang = mw.config.get( 'wgUserLanguage' );
 
-		return i18n[lang] && i18n[lang][key] || i18n.en[key] || '<' + key + '>';
+		return i18n[ lang ] && i18n[ lang ][ key ] || i18n.en[ key ] || '<' + key + '>';
 	}
 
 	/**
@@ -355,13 +355,13 @@
 	 */
 	function lastMatch( regexp, val ) {
 		var match,
-			lastMatch = false;
+			result = false;
 
 		while ( regexp && ( match = regexp.exec( val ) ) ) {
-			lastMatch = match;
+			result = match;
 		}
 
-		return lastMatch;
+		return result;
 	}
 
 	/**
@@ -371,9 +371,10 @@
 	function parseSearchOptions( fullQuery ) {
 		[ true, false ].forEach( function ( parseGreedyOptions ) {
 			for ( var i = advancedOptions.length; i--; ) {
-				var option = advancedOptions[i];
+				var option = advancedOptions[ i ],
+					isGreedy = option.greedy ? true : false;
 
-				if ( parseGreedyOptions !== !!option.greedy ) {
+				if ( isGreedy !== parseGreedyOptions ) {
 					continue;
 				}
 
@@ -387,8 +388,8 @@
 
 				if ( match ) {
 					fullQuery = fullQuery.slice( 0, match.index )
-						+ fullQuery.slice( match.index + match[0].length );
-					$field.val( trimQuotes( match[1] ) );
+						+ fullQuery.slice( match.index + match[ 0 ].length );
+					$field.val( trimQuotes( match[ 1 ] ) );
 				}
 			}
 		} );
@@ -443,11 +444,11 @@
 
 			var id = 'advancedSearchOption-' + option.id;
 
-			if ( !optionSets[option.group] ) {
-				optionSets[option.group] = [];
+			if ( !optionSets[ option.group ] ) {
+				optionSets[ option.group ] = [];
 			}
 
-			optionSets[option.group].push(
+			optionSets[ option.group ].push(
 				$( '<div>' )
 					.css( { display: 'table-row' } )
 					.append(
@@ -492,7 +493,7 @@
 					.text( msg( group ) )
 				);
 
-			optionSets[group].forEach( function ( $option ) {
+			optionSets[ group ].forEach( function ( $option ) {
 				$optionSet.append( $option );
 			} );
 
@@ -508,7 +509,7 @@
 
 			$allOptions.toggle();
 
-			if ( $allOptions.is(':visible') ) {
+			if ( $allOptions.is( ':visible' ) ) {
 				// Clean the top-right search box to avoid confusion
 				var $topSearchField = $( '#searchInput' );
 				if ( $topSearchField.val() === query ) {

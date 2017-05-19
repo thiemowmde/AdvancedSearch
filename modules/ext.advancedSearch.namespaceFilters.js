@@ -51,7 +51,7 @@
 	];
 
 	var i18n = {
-		'de': {
+		de: {
 			articles: 'Artikel',
 			images: 'Dateien',
 			project: 'Projektnamensräume',
@@ -59,9 +59,9 @@
 			all: 'Alle',
 			'search-in': 'Suche in:',
 			'individual-namespaces': 'Individuelle Namensräume:',
-			'blanknamespace': '(Artikel)'
+			blanknamespace: '(Artikel)'
 		},
-		'en': {
+		en: {
 			articles: 'Articles',
 			images: 'Files',
 			project: 'Project namespaces',
@@ -69,7 +69,7 @@
 			all: 'All',
 			'search-in': 'Search in:',
 			'individual-namespaces': 'Individual namespaces:',
-			'blanknamespace': '(Article)'
+			blanknamespace: '(Article)'
 		}
 	};
 
@@ -80,7 +80,7 @@
 	function msg( key ) {
 		var lang = mw.config.get( 'wgUserLanguage' );
 
-		return i18n[lang] && i18n[lang][key] || i18n.en[key] || '<' + key + '>';
+		return i18n[ lang ] && i18n[ lang ][ key ] || i18n.en[ key ] || '<' + key + '>';
 	}
 
 	/**
@@ -93,7 +93,7 @@
 			return ns | 0;
 		} ).filter( function ( ns ) {
 			// Must be an even, positive number. Must have a discussion namespace.
-			return ns >= 0 && !( ns % 2 ) && namespaces[ns + 1];
+			return ns >= 0 && ( ns % 2 ) === 0 && namespaces[ ns + 1 ];
 		} );
 	}
 
@@ -112,7 +112,7 @@
 			' ',
 			$( '<label>' ).prop( {
 				for: 'mw-search-ns' + ns
-			} ).text( mw.config.get( 'wgFormattedNamespaces' )[ns]
+			} ).text( mw.config.get( 'wgFormattedNamespaces' )[ ns ]
 				|| msg( 'blanknamespace' ) )
 		);
 	}
