@@ -70,7 +70,10 @@
 			formatter: function ( val ) {
 				return enforceQuotes( val );
 			},
-			parser: /(?:^| +)"((?:\\.|[^"\\])+)"(?= |$)/gi
+			parser: /(?:^| +)"((?:\\.|[^"\\])+)"(?= |$)/gi,
+			init: function () {
+				return new OO.ui.TagMultiselectWidget( {} );
+			}
 		},
 		{
 			group: 'text',
@@ -97,7 +100,10 @@
 			formatter: function ( val ) {
 				return 'hastemplate:' + optionalQuotes( val );
 			},
-			parser: /(?:^| +)\bhastemplate:("(?:\\.|[^"\\])+"|[^\s"]+)/gi
+			parser: /(?:^| +)\bhastemplate:("(?:\\.|[^"\\])+"|[^\s"]+)/gi,
+			init: function () {
+				return new OO.ui.CapsuleMultiselectWidget( {} );
+			}
 		},
 		{
 			group: 'text',
@@ -408,7 +414,7 @@
 		fullQuery = fullQuery || '';
 
 		advancedOptions.forEach( function ( option ) {
-			var $field = $( '#advancedSearchOption-' + option.id + ' input');
+			var $field = $( '#advancedSearchOption-' + option.id + ' input' );
 
 			if ( !$field.length ) {
 				return;
@@ -446,10 +452,13 @@
 				return;
 			}
 
-			var id = 'advancedSearchOption-' + option.id;
-			var widget = new OO.ui.TextInputWidget( {
-				id: id
-			} );
+			var widgetInit = option.init || function () {
+				var id = 'advancedSearchOption-' + option.id;
+				return new OO.ui.TextInputWidget( {
+					id: id
+				} );
+			},
+			widget = widgetInit();
 
 			if ( !optionSets[ option.group ] ) {
 				optionSets[ option.group ] = new OO.ui.FieldsetLayout( {
