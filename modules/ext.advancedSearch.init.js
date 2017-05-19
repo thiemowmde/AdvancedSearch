@@ -446,30 +446,24 @@
 				return;
 			}
 
+			// TODO use id in input field instead of surrounding DIV
 			var id = 'advancedSearchOption-' + option.id;
+			var widget = new OO.ui.TextInputWidget( {
+				id: id
+			} );
 
 			if ( !optionSets[ option.group ] ) {
-				optionSets[ option.group ] = [];
+				optionSets[ option.group ] = new OO.ui.FieldsetLayout( {
+					label: msg( option.group )
+				} );
 			}
 
-			optionSets[ option.group ].push(
-				$( '<div>' )
-					.css( { display: 'table-row' } )
-					.append(
-						$( '<label>' )
-							.prop( { 'for': id, title: option.placeholder || '' } )
-							.css( {
-								display: 'table-cell',
-								'text-align': 'right',
-								'padding-right': '0.5em',
-								width: '23em'
-							} )
-							.text( msg( option.id ) ),
-						$( '<input>' )
-							.prop( { id: id } )
-							.css( { display: 'table-cell' } )
-					)
-			);
+			optionSets[ option.group ].addItems( [
+				new OO.ui.FieldLayout( widget, {
+					label: msg( option.id ),
+					align: 'left'
+				} )
+			] );
 		} );
 
 		var $allOptions = $( '<fieldset>' )
@@ -486,22 +480,7 @@
 			.hide();
 
 		for ( var group in optionSets ) {
-			var $optionSet = $( '<fieldset>' )
-				.css( {
-					border: 'none',
-					'border-top': 'solid 1px #c8ccd1',
-					margin: 0
-				} )
-				.append( $( '<legend>' )
-					.css( { color: '#666' } )
-					.text( msg( group ) )
-				);
-
-			optionSets[ group ].forEach( function ( $option ) {
-				$optionSet.append( $option );
-			} );
-
-			$allOptions.append( $optionSet );
+			$allOptions.append( optionSets[ group ].$element );
 		}
 
 		var advancedButton = new OO.ui.ButtonWidget( {
