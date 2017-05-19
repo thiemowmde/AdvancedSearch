@@ -378,7 +378,7 @@
 					continue;
 				}
 
-				var $field = $( '#advancedSearchOption-' + option.id );
+				var $field = $( '#advancedSearchOption-' + option.id + ' input' );
 
 				if ( !$field.length || $.trim( $field.val() ) ) {
 					continue;
@@ -408,7 +408,7 @@
 		fullQuery = fullQuery || '';
 
 		advancedOptions.forEach( function ( option ) {
-			var $field = $( '#advancedSearchOption-' + option.id );
+			var $field = $( '#advancedSearchOption-' + option.id + ' input');
 
 			if ( !$field.length ) {
 				return;
@@ -446,7 +446,6 @@
 				return;
 			}
 
-			// TODO use id in input field instead of surrounding DIV
 			var id = 'advancedSearchOption-' + option.id;
 			var widget = new OO.ui.TextInputWidget( {
 				id: id
