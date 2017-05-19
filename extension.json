@@ -7,17 +7,26 @@
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:AdvancedSearch",
 	"descriptionmsg": "advancedsearch-desc",
-	"license-name": "MIT",
+	"license-name": "GPL-2.0+",
 	"type": "other",
+	"AutoloadClasses": {
+		"AdvancedSearch\\Hooks": "AdvancedSearch.hooks.php"
+	},
+	"Hooks": {
+		"BeforePageDisplay": [
+			"AdvancedSearch\\Hooks::onBeforePageDisplay"
+		]
+	},
 	"MessagesDirs": {
 		"AdvancedSearch": [
 			"i18n"
 		]
 	},
 	"ResourceModules": {
-		"ext.advancedSearch": {
+		"ext.advancedSearch.init": {
 			"scripts": [
-				"modules/ext.advancedSearch.js"
+				"modules/ext.advancedSearch.init.js",
+				"modules/ext.advancedSearch.namespaceFilters.js"
 			],
 			"styles": [
 				"modules/ext.advancedSearch.css"
