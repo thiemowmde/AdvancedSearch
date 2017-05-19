@@ -1,0 +1,36 @@
+{
+	"name": "AdvancedSearch",
+	"version": "0.1.0",
+	"author": [
+		"Thiemo Mättig",
+		"Gabriel Birke"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:AdvancedSearch",
+	"descriptionmsg": "advancedsearch-desc",
+	"license-name": "MIT",
+	"type": "other",
+	"MessagesDirs": {
+		"AdvancedSearch": [
+			"i18n"
+		]
+	},
+	"ResourceModules": {
+		"ext.advancedSearch": {
+			"scripts": [
+				"modules/ext.advancedSearch.js"
+			],
+			"styles": [
+				"modules/ext.advancedSearch.css"
+			],
+			"messages": [
+			],
+			"dependencies": [
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "AdvancedSearch"
+	},
+	"manifest_version": 1
+}
