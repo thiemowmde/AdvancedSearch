@@ -399,9 +399,10 @@
 
 	/**
 	 * @param {string} [fullQuery]
+	 * @param {boolean} [clean=false]
 	 * @return {string}
 	 */
-	function formatSearchOptions( fullQuery ) {
+	function formatSearchOptions( fullQuery, clean ) {
 		var greedyQuery = '';
 
 		fullQuery = fullQuery || '';
@@ -422,7 +423,10 @@
 				} else {
 					fullQuery += ' ' + option.formatter( val );
 				}
-				$field.val( '' );
+
+				if ( clean === true ) {
+					$field.val( '' );
+				}
 
 				if ( option.requiredNamespace ) {
 					$( '#mw-search-ns' + option.requiredNamespace ).prop( 'checked', true );
@@ -517,10 +521,11 @@
 				}
 
 				query = parseSearchOptions( query );
+				$searchField.val( query );
+				advancedButton.setLabel( msg( 'advanced-search' ) );
 			} else {
-				query = formatSearchOptions( query );
+				advancedButton.setLabel( formatSearchOptions() || msg( 'advanced-search' ) );
 			}
-			$searchField.val( query );
 		} );
 
 		var $advancedButton = advancedButton.$element.css( {
@@ -543,7 +548,7 @@
 
 		$search.on( 'submit', function () {
 			var $searchField = $( this ).find( 'input[name="search"]' ),
-				query = formatSearchOptions( $searchField.val() );
+				query = formatSearchOptions( $searchField.val(), true );
 
 			$searchField.val( query );
 			// Copy to the top-right search box for the sake of completeness
