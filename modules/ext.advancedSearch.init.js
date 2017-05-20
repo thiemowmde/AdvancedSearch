@@ -71,7 +71,11 @@
 	 */
 	function createMultiSelectChangeHandler( id ) {
 		return function ( newValue ) {
-			if ( typeof $valueObj === 'string' ) {
+			if ( typeof newValue === 'string' ) {
+				mw.libs.advancedSearch.currentSearch[ id ] = newValue;
+				return;
+			}
+			if ( typeof newValue !== 'object' ) {
 				mw.libs.advancedSearch.currentSearch[ id ] = newValue;
 				return;
 			}
