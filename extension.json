@@ -48,7 +48,16 @@
 				"oojs-ui.styles.icons-layout",
 				"oojs-ui.styles.icons-media",
 				"oojs-ui.styles.icons-user",
-				"oojs-ui.styles.icons-wikimedia"
+				"oojs-ui.styles.icons-wikimedia",
+				"ext.advancedSearch.dm.SearchModel"
+			]
+		},
+		"ext.advancedSearch.dm.SearchModel": {
+			"scripts": [
+				"modules/dm/ext.advancedSearch.SearchModel.js"
+			],
+			"dependencies": [
+				"oojs-ui"
 			]
 		}
 	},

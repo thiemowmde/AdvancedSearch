@@ -9,21 +9,37 @@
 			mw.libs.advancedSearch = {};
 		}
 
-		if ( !mw.libs.advancedSearch.currentSearch ) {
-			mw.libs.advancedSearch.currentSearch = {};
-		}
-
 		if ( mw.libs.advancedSearch.advancedOptionsLoaded ) {
 			return true;
 		}
+
 		mw.libs.advancedSearch.advancedOptionsLoaded = true;
 
 		return false;
 	}
 
+	function initializeCurrentSearch( state ) {
+		if ( mw.libs.advancedSearch.initializedFromUrl ) {
+			return;
+		}
+		var currentSearch;
+		try {
+			currentSearch = JSON.parse( mw.util.getParamValue( 'advancedSearch-current' ) );
+			if ( typeof currentSearch === 'object' ) {
+				for ( var opt in currentSearch ) {
+					state.storeOption( opt, currentSearch[ opt ] );
+				}
+			}
+		} catch ( e ) {}
+		mw.libs.advancedSearch.initializedFromUrl = true;
+	}
+
 	if ( isLoaded() ) {
 		return;
 	}
+
+	var state = new mw.libs.advancedSearch.dm.SearchModel();
+	initializeCurrentSearch( state );
 
 	if ( mw.config.get( 'wgCanonicalSpecialPageName' ) !== 'Search' ) {
 		return;
@@ -71,20 +87,18 @@
 	 */
 	function createMultiSelectChangeHandler( id ) {
 		return function ( newValue ) {
-			if ( typeof newValue === 'string' ) {
-				mw.libs.advancedSearch.currentSearch[ id ] = newValue;
-				return;
-			}
+
 			if ( typeof newValue !== 'object' ) {
-				mw.libs.advancedSearch.currentSearch[ id ] = newValue;
+				state.storeOption( id, newValue );
 				return;
 			}
-			mw.libs.advancedSearch.currentSearch[ id ] = $.map( newValue, function ( $valueObj ) {
+
+			state.storeOption( id, $.map( newValue, function ( $valueObj ) {
 				if ( typeof $valueObj === 'string' ) {
 					return $valueObj;
 				}
 				return $valueObj.data;
-			} );
+			} ) );
 		};
 	}
 
@@ -102,6 +116,9 @@
 			},
 			init: function () {
 				var widget = new OO.ui.TagMultiselectWidget( { allowArbitrary: true } );
+				$.each( state.getOption( 'phrase' ), function () {
+					widget.addTag( this );
+				} );
 				return widget;
 			}
 		},
@@ -134,15 +151,18 @@
 				return 'hastemplate:' + optionalQuotes( val );
 			},
 			init: function () {
-				return new OO.ui.CapsuleMultiselectWidget( {
+				var data = [
+					{ data: 'infobox_nature', label: 'Infobox Nature' },
+					{ data: 'infobox_architecture', label: 'Infobox Architecture' },
+					{ data: 'commons_link', label: 'Link to Commons' }
+				],
+				optionWidgets = $.map( data, function () { return new OO.ui.MenuOptionWidget( this ); } ),
+				widget = new OO.ui.CapsuleMultiselectWidget( {
 					menu: {
-						items: [
-								new OO.ui.MenuOptionWidget( { data: 'infobox_nature', label: 'Infobox Nature' } ),
-								new OO.ui.MenuOptionWidget( { data: 'infobox_architecture', label: 'Infobox Architecture' } ),
-								new OO.ui.MenuOptionWidget( { data: 'commons_link', label: 'Link to Commons' } )
-							]
+						items: optionWidgets
 					}
 				} );
+				return widget;
 			}
 		},
 		{
@@ -392,9 +412,7 @@
 			greedyQuery = null;
 
 		advancedOptions.forEach( function ( option ) {
-			var val = mw.libs.advancedSearch.currentSearch[ option.id ]
-				// FIXME: This is a temporary hack, remove!
-				|| mw.util.getParamValue( 'advancedSearchOption-' + option.id );
+			var val = state.getOption( option.id );
 
 			if ( val ) {
 				// FIXME: Should fail if there is more than one greedy option!
@@ -486,7 +504,7 @@
 		if ( !$allOptions.is( ':visible' ) ) {
 			var searchOptions = formatSearchOptions();
 			for ( var i = 0; i < searchOptions.length; i++ ) {
-				$advancedButtonLabel.append( $( '<span>' ).text( searchOptions[i] ) );
+				$advancedButtonLabel.append( $( '<span>' ).text( searchOptions[ i ] ) );
 			}
 		}
 		if ( $advancedButtonLabel.is( ':empty' ) ) {
@@ -513,6 +531,17 @@
 		// Copy to the top-right search box for the sake of completeness
 		$( '#searchInput' ).val( compiledQuery );
 	} );
+
+	// TODO Move this element into an OOUI component with the state as constructor param
+	var $currentSearch = $( '<input>' ).prop( {
+		name: 'advancedSearch-current',
+		type: 'hidden'
+	} );
+
+	state.on( 'update', function ( evt ) {
+		$currentSearch.val( state.toJSON() );
+	} );
+	$search.append( $currentSearch );
 
 	mw.loader.load( '//de.wikipedia.org/w/index.php?title=MediaWiki:Gadget-DeepCat.js&action=raw&ctype=text/javascript' );
 } )( mediaWiki, jQuery );
