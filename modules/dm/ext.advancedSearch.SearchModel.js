@@ -5,6 +5,11 @@
 	mw.libs.advancedSearch = mw.libs.advancedSearch || {};
 	mw.libs.advancedSearch.dm = mw.libs.advancedSearch.dm || {};
 
+	/**
+	 * @class
+	 * @constructor
+	 * @mixins OO.EventEmitter
+	 */
 	mw.libs.advancedSearch.dm.SearchModel = function () {
 		this.searchOptions = {};
 
@@ -17,6 +22,21 @@
 	OO.initClass( mw.libs.advancedSearch.dm.SearchModel );
 	OO.mixinClass( mw.libs.advancedSearch.dm.SearchModel, OO.EventEmitter );
 
+	/* Events */
+
+	/**
+	 * @event update
+	 *
+	 * The state of an option has changed
+	 */
+
+	/* Methods */
+
+	/**
+	 *
+	 * @param  {string} optionId
+	 * @param  {mixed} value
+	 */
 	mw.libs.advancedSearch.dm.SearchModel.prototype.storeOption = function ( optionId, value ) {
 		// TODO check for allwed options?
 		this.searchOptions[ optionId ] = value;

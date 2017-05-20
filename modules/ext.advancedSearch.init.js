@@ -41,6 +41,13 @@
 	var state = new mw.libs.advancedSearch.dm.SearchModel();
 	initializeCurrentSearch( state );
 
+	// TODO initialize with API call instead
+	var templateModel = new mw.libs.advancedSearch.dm.MenuDataModel( {
+		infoboxNature: 'Infobox Nature',
+		infoboxArchitecture: 'Infobox Architecture',
+		commonsLink: 'Link to Commons'
+	} );
+
 	if ( mw.config.get( 'wgCanonicalSpecialPageName' ) !== 'Search' ) {
 		return;
 	}
@@ -151,17 +158,11 @@
 				return 'hastemplate:' + optionalQuotes( val );
 			},
 			init: function () {
-				var data = [
-					{ data: 'infobox_nature', label: 'Infobox Nature' },
-					{ data: 'infobox_architecture', label: 'Infobox Architecture' },
-					{ data: 'commons_link', label: 'Link to Commons' }
-				],
-				optionWidgets = $.map( data, function () { return new OO.ui.MenuOptionWidget( this ); } ),
-				widget = new OO.ui.CapsuleMultiselectWidget( {
-					menu: {
-						items: optionWidgets
-					}
-				} );
+				var widget = new mw.libs.advancedSearch.ui.MenuedInput(
+					templateModel,
+					state,
+					{ optionId: 'hastemplate' }
+				);
 				return widget;
 			}
 		},
