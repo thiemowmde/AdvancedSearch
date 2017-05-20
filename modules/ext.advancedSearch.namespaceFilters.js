@@ -58,7 +58,7 @@
 			talk: 'Diskussionsseiten',
 			all: 'Alle',
 			'search-in': 'Suche in:',
-			'individual-namespaces': 'Individuelle Namensräume:',
+			'individual-namespaces': 'Individuelle Namensräume',
 			blanknamespace: '(Artikel)'
 		},
 		en: {
@@ -68,7 +68,7 @@
 			talk: 'Talk pages',
 			all: 'All',
 			'search-in': 'Search in:',
-			'individual-namespaces': 'Individual namespaces:',
+			'individual-namespaces': 'Individual namespaces',
 			blanknamespace: '(Article)'
 		}
 	};
@@ -141,8 +141,7 @@
 	$( 'form#search input[name=profile][value=default]' ).val( 'advanced' );
 
 	var $presetsBar = $( '.mw-search-profile-tabs' ),
-		$individualNamespaces = $( '#mw-searchoptions' ),
-		$headline = $( '#mw-searchoptions h4' );
+		$individualNamespaces = $( '#mw-searchoptions' );
 
 	if ( !$individualNamespaces.length ) {
 		var $table = $( '<table>' );
@@ -155,45 +154,20 @@
 		$individualNamespaces = $( '<fieldset>' ).prop( {
 			id: 'mw-searchoptions'
 		} );
-		$headline = $( '<h4>' );
-		$presetsBar.after( $individualNamespaces.append( $headline, $table ) );
+		$presetsBar.after( $individualNamespaces.append( $table ) );
 	}
 
-	$headline.css( {
-		color: '#666',
-		float: 'none',
-		'font-weight': 'normal',
-		'margin-bottom': '0.3em'
-	} );
 	$presetsBar.css( {
-			'background-image': 'url(//de.wikipedia.org/w/load.php?modules=oojs-ui.styles.indicators&image=down)',
-			'background-position': '99%',
-			'background-repeat': 'no-repeat',
-			'background-size': '18px',
-			'border-color': '#a2a9b1',
-			'border-radius': '2px',
-			'box-sizing': 'border-box',
-			cursor: 'pointer',
-			'margin-top': '0.3em',
-			'max-width': '50em',
-			padding: '0.4em 0.7em',
-			'padding-right': '28px',
-			position: 'relative'
-		} )
-		.append( $( '<b>' ).text( msg( 'search-in' ) ), '\n' )
-		.click( function ( e ) {
-			$individualNamespaces.toggle();
-		} );
-
-	$headline.text( msg( 'individual-namespaces' ) );
-
-	$individualNamespaces.find( 'table' ).css( {
-		float: 'none',
-		margin: 0
-	} );
-	$individualNamespaces.find( 'tr:first-child td:first-child' ).css( {
-		'min-width': '12em'
-	} );
+		'border-color': '#a2a9b1',
+		'border-radius': '2px',
+		'box-sizing': 'border-box',
+		'margin-top': '0.3em',
+		'max-width': '50em',
+		padding: '0.4em 0.7em',
+		'padding-right': '28px',
+		position: 'relative'
+	} )
+	.append( $( '<b>' ).text( msg( 'search-in' ) ), '\n' );
 
 	presets.forEach( function ( preset ) {
 		var $checkbox = $( '<input>' )
@@ -234,17 +208,65 @@
 		$presetsBar.append( $label, '\n' );
 	} );
 
-	$( '#mw-searchoptions input[id^=mw-search-ns]' ).click( function ( e ) {
-		if ( !e.originalEvent ) {
-			return;
-		}
-
-		updatePresetStates();
-	} );
-
 	updatePresetStates();
 
 	$( '.search-types, #mw-search-togglebox, #mw-search-togglebox + .divider' )
 		.hide();
+
+	var namespaceItems = [],
+		selectedNamespaces = [];
+	$.each( mw.config.get( 'wgFormattedNamespaces' ), function ( ns, label ) {
+		// Cast to integer.
+		ns = ns | 0;
+
+		if ( ns < 0 ) {
+			return;
+		}
+		var icon = null;
+		if ( ns === 2 ) {
+			icon = 'userAvatar';
+		} else if ( ns === 3 ) {
+			icon = 'userTalk';
+		} else if ( ns === 6 ) {
+			icon = 'image';
+		} else if ( ns === 8 ) {
+			icon = 'language';
+		} else if ( ns === 10 || ns === 828 ) {
+			icon = 'puzzle';
+		} else if ( ns === 12 ) {
+			icon = 'help';
+		} else if ( label === 'Wikipedia' ) {
+			icon = 'logoWikipedia';
+		} else if ( ns % 2 ) {
+			icon = 'stripeSummary';
+		} else {
+			icon = 'article';
+		}
+		namespaceItems.push( new OO.ui.MenuOptionWidget( {
+			data: ns,
+			label: label || msg( 'blanknamespace' ),
+			icon: icon
+		} ) );
+
+		if ( mw.util.getParamValue( 'ns' + ns ) ) {
+			selectedNamespaces.push( ns );
+		}
+	} );
+
+	var multiselect = new OO.ui.CapsuleMultiselectWidget( {
+		menu: { items: namespaceItems },
+		placeholder: msg( 'individual-namespaces' )
+	} )
+	.addItemsFromData( selectedNamespaces )
+	.on( 'change', function ( values ) {
+		$( '#mw-searchoptions input[id^=mw-search-ns]' ).each( function ( index, checkbox ) {
+			var ns = checkbox.name.replace( /^\D+/, '' ) | 0;
+			checkbox.checked = values.indexOf( ns ) !== -1;
+		} );
+	} );
+	multiselect.$element.css( {
+		'margin-top': '-1px'
+	} );
+	$presetsBar.after( multiselect.$element );
 
 } )( mediaWiki, jQuery );

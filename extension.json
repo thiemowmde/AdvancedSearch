@@ -41,7 +41,14 @@
 			],
 			"dependencies": [
 				"mediawiki.util",
-				"oojs-ui"
+				"oojs-ui",
+				"oojs-ui.styles.icons-content",
+				"oojs-ui.styles.icons-editing-advanced",
+				"oojs-ui.styles.icons-interactions",
+				"oojs-ui.styles.icons-layout",
+				"oojs-ui.styles.icons-media",
+				"oojs-ui.styles.icons-user",
+				"oojs-ui.styles.icons-wikimedia"
 			]
 		}
 	},

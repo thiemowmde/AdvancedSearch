@@ -388,7 +388,9 @@
 			greedyQuery = null;
 
 		advancedOptions.forEach( function ( option ) {
-			var val = mw.libs.advancedSearch.currentSearch[ option.id ];
+			var val = mw.libs.advancedSearch.currentSearch[ option.id ]
+				// FIXME: This is a temporary hack, remove!
+				|| mw.util.getParamValue( 'advancedSearchOption-' + option.id );
 
 			if ( val ) {
 				// FIXME: Should fail if there is more than one greedy option!
@@ -457,8 +459,8 @@
 	var $advancedButtonLabel = $( '<span>' ).prop( { 'class': 'advancedSearch-optionTags' } ),
 		advancedButton = new OO.ui.ButtonWidget( {
 			$label: $advancedButtonLabel,
-			label: msg( 'advanced-search' )
-			// indicator: 'down'
+			label: msg( 'advanced-search' ),
+			indicator: 'down'
 		} );
 
 	var $advancedButton = advancedButton.$element.css( {
@@ -470,10 +472,6 @@
 		position: 'relative'
 	} );
 	$advancedButton.children().css( {
-		'background-image': 'url(//de.wikipedia.org/w/load.php?modules=oojs-ui.styles.indicators&image=down)',
-		'background-position': '99%',
-		'background-repeat': 'no-repeat',
-		'background-size': '18px',
 		display: 'block',
 		'text-align': 'left'
 	} );
