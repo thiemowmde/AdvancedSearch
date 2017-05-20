@@ -27,14 +27,6 @@
 
 	var presets = [
 		{
-			id: 'articles',
-			filter: '#mw-search-ns0'
-		},
-		{
-			id: 'images',
-			filter: '#mw-search-ns6'
-		},
-		{
 			id: 'project',
 			filter: '#mw-search-ns4, #mw-search-ns10, #mw-search-ns12, #mw-search-ns100, #mw-search-ns102, #mw-search-ns828'
 		},
@@ -58,7 +50,7 @@
 			talk: 'Diskussionsseiten',
 			all: 'Alle',
 			'search-in': 'Suche in:',
-			'individual-namespaces': 'Individuelle Namensräume',
+			'add-namespace': 'Namensraum hinzufügen …',
 			blanknamespace: '(Artikel)'
 		},
 		en: {
@@ -68,7 +60,7 @@
 			talk: 'Talk pages',
 			all: 'All',
 			'search-in': 'Search in:',
-			'individual-namespaces': 'Individual namespaces',
+			'add-namespace': 'Add a namespace …',
 			blanknamespace: '(Article)'
 		}
 	};
@@ -205,7 +197,8 @@
 				} )
 				.append( $checkbox, '\n', msg( preset.id ) );
 
-		$presetsBar.append( $label, '\n' );
+		// TODO: Re-enable certain presets?
+		// $presetsBar.append( $label, '\n' );
 	} );
 
 	updatePresetStates();
@@ -255,7 +248,7 @@
 
 	var multiselect = new OO.ui.CapsuleMultiselectWidget( {
 		menu: { items: namespaceItems },
-		placeholder: msg( 'individual-namespaces' )
+		placeholder: msg( 'add-namespace' )
 	} )
 	.addItemsFromData( selectedNamespaces )
 	.on( 'change', function ( values ) {
