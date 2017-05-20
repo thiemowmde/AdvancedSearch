@@ -49,14 +49,23 @@
 				"oojs-ui.styles.icons-media",
 				"oojs-ui.styles.icons-user",
 				"oojs-ui.styles.icons-wikimedia",
-				"ext.advancedSearch.dm.SearchModel",
 				"ext.advancedSearch.dm.MenuDataModel",
+				"ext.advancedSearch.dm.SearchModel",
+				"ext.advancedSearch.ui.ArbitraryWordInput",
 				"ext.advancedSearch.ui.MenuedInput"
 			]
 		},
 		"ext.advancedSearch.ui.MenuedInput": {
 			"scripts": [
 				"modules/ui/ext.advancedSearch.MenuedInput.js"
+			],
+			"dependencies": [
+				"oojs-ui"
+			]
+		},
+		"ext.advancedSearch.ui.ArbitraryWordInput": {
+			"scripts": [
+				"modules/ui/ext.advancedSearch.ArbitraryWordInput.js"
 			],
 			"dependencies": [
 				"oojs-ui"

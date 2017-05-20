@@ -122,7 +122,11 @@
 				return enforceQuotes( val );
 			},
 			init: function () {
-				var widget = new OO.ui.TagMultiselectWidget( { allowArbitrary: true } );
+				var widget = new mw.libs.advancedSearch.ui.ArbitraryWordInput(
+					state,
+					{ optionId: 'phrase' }
+				);
+				// TODO Move widget initialization to store, make widget listen to store.
 				$.each( state.getOption( 'phrase' ), function () {
 					widget.addTag( this );
 				} );
