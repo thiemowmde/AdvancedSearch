@@ -9,6 +9,10 @@
 			mw.libs.advancedSearch = {};
 		}
 
+		if ( !mw.libs.advancedSearch.currentSearch ) {
+			mw.libs.advancedSearch.currentSearch = {};
+		}
+
 		if ( mw.libs.advancedSearch.advancedOptionsLoaded ) {
 			return true;
 		}
@@ -61,6 +65,25 @@
 		return val.replace( /[\s.]+/g, '' ).replace( /(\d)\D+(?=\d)/g, '$1,' );
 	}
 
+	/**
+	 * @param  {string} id
+	 * @return {Function}
+	 */
+	function createMultiSelectChangeHandler( id ) {
+		return function ( newValue ) {
+			if ( typeof $valueObj === 'string' ) {
+				mw.libs.advancedSearch.currentSearch[ id ] = newValue;
+				return;
+			}
+			mw.libs.advancedSearch.currentSearch[ id ] = $.map( newValue, function ( $valueObj ) {
+				if ( typeof $valueObj === 'string' ) {
+					return $valueObj;
+				}
+				return $valueObj.data;
+			} );
+		};
+	}
+
 	var advancedOptions = [
 		// Text
 		{
@@ -68,6 +91,9 @@
 			id: 'phrase',
 			placeholder: '"…"',
 			formatter: function ( val ) {
+				if ( Array.isArray( val ) ) {
+					return $.map( val, enforceQuotes ).join( ' ' );
+				}
 				return enforceQuotes( val );
 			},
 			init: function () {
@@ -96,6 +122,11 @@
 			id: 'hastemplate',
 			placeholder: 'hastemplate:…',
 			formatter: function ( val ) {
+				if ( Array.isArray( val ) ) {
+					return $.map( val, function ( templateItem ) {
+						return 'hastemplate:' + optionalQuotes( templateItem );
+					} ).join( ' ' );
+				}
 				return 'hastemplate:' + optionalQuotes( val );
 			},
 			init: function () {
@@ -357,13 +388,7 @@
 			greedyQuery = null;
 
 		advancedOptions.forEach( function ( option ) {
-			var $field = $( '#advancedSearchOption-' + option.id + ' input' );
-
-			if ( !$field.length ) {
-				return;
-			}
-
-			var val = $.trim( $field.val() );
+			var val = mw.libs.advancedSearch.currentSearch[ option.id ];
 
 			if ( val ) {
 				// FIXME: Should fail if there is more than one greedy option!
@@ -407,6 +432,7 @@
 			} );
 		},
 		widget = widgetInit();
+		widget.on( 'change', createMultiSelectChangeHandler( option.id ) );
 
 		if ( !optionSets[ option.group ] ) {
 			optionSets[ option.group ] = new OO.ui.FieldsetLayout( {
