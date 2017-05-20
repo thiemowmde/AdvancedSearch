@@ -1,31 +1,44 @@
+#mw-searchoptions,
 .advancedSearch-fieldContainer {
-    background: linear-gradient(rgba(0, 0, 0, 0.1), #fff 0.5em);
-    border: solid 1px #c8ccd1;
-    border-top: 0;
-    box-sizing: border-box;
-    margin: 0;
-    margin-top: -1px;
-    max-width: 50em;
-    padding: 1em 1em 0.2em 1em;
+	background: linear-gradient(rgba(0, 0, 0, 0.1), #fff 0.5em);
+	border: solid 1px #c8ccd1;
+	border-top: 0;
+	box-sizing: border-box;
+	display: none;
+	margin: 0;
+	margin-top: -1px;
+	max-width: 50em;
+	padding: 1em;
 }
 
 .advancedSearch-fieldContainer .oo-ui-fieldLayout {
-    margin-top: .5em;
+	margin-top: .5em;
 }
 
 .advancedSearch-fieldContainer fieldset.oo-ui-labelElement {
-    border: none;
-    border-top: solid 1px #c8ccd1;
+	border: none;
+	border-top: solid 1px #c8ccd1;
 }
 
 .advancedSearch-fieldContainer .oo-ui-labelElement > .oo-ui-fieldsetLayout-header > .oo-ui-labelElement-label {
-    color: #666;
-    background: white;
-    position: relative;
-    top:-0.8em;
-    left: 1em;
-    padding:0.2em;
-    font-weight: normal;
-    font-size: 1em;
-    line-height:1.2em;
+	color: #666;
+	background: white;
+	position: relative;
+	top:-0.8em;
+	left: 1em;
+	padding:0.2em;
+	font-weight: normal;
+	font-size: 1em;
+	line-height:1.2em;
+}
+
+.advancedSearch-optionTags > span {
+	background: rgba(255, 255, 255, 0.6);
+	border-radius: 2px;
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+	font-family: monospace;
+	font-size: 15px;
+	font-weight: normal;
+	margin-right: 0.5em;
+	padding: 0.1em 0.5em;
 }

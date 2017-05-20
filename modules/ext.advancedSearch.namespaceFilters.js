@@ -165,14 +165,6 @@
 		'font-weight': 'normal',
 		'margin-bottom': '0.3em'
 	} );
-	$individualNamespaces.css( {
-			background: 'linear-gradient(rgba(0, 0, 0, 0.1), #fff 0.5em)',
-			'box-sizing': 'border-box',
-			'margin-top': '-1px',
-			'max-width': '50em',
-			'padding-top': '1em'
-		} )
-		.hide();
 	$presetsBar.css( {
 			'background-image': 'url(//de.wikipedia.org/w/load.php?modules=oojs-ui.styles.indicators&image=down)',
 			'background-position': '99%',

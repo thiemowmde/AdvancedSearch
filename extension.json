@@ -15,6 +15,12 @@
 	"Hooks": {
 		"BeforePageDisplay": [
 			"AdvancedSearch\\Hooks::onBeforePageDisplay"
+		],
+		"SpecialSearchPowerBox": [
+			"AdvancedSearch\\Hooks::onSpecialSearchPowerBox"
+		],
+		"SpecialSearchProfiles": [
+			"AdvancedSearch\\Hooks::onSpecialSearchProfiles"
 		]
 	},
 	"MessagesDirs": {

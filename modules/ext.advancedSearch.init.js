@@ -350,13 +350,11 @@
 	}
 
 	/**
-	 * @param {string} [fullQuery]
-	 * @return {string}
+	 * @return {string[]}
 	 */
-	function formatSearchOptions( fullQuery ) {
-		var greedyQuery = '';
-
-		fullQuery = fullQuery || '';
+	function formatSearchOptions() {
+		var queryElements = [],
+			greedyQuery = null;
 
 		advancedOptions.forEach( function ( option ) {
 			var $field = $( '#advancedSearchOption-' + option.id + ' input' );
@@ -370,9 +368,9 @@
 			if ( val ) {
 				// FIXME: Should fail if there is more than one greedy option!
 				if ( option.greedy && !greedyQuery ) {
-					greedyQuery += ' ' + option.formatter( val );
+					greedyQuery = option.formatter( val );
 				} else {
-					fullQuery += ' ' + option.formatter( val );
+					queryElements.push( option.formatter( val ) );
 				}
 
 				if ( option.requiredNamespace ) {
@@ -381,7 +379,11 @@
 			}
 		} );
 
-		return $.trim( fullQuery + greedyQuery );
+		if ( greedyQuery ) {
+			queryElements.push( greedyQuery );
+		}
+
+		return queryElements;
 	}
 
 	var $search = $( 'form#search, form#powersearch' ),
@@ -420,25 +422,18 @@
 		] );
 	} );
 
-	var $allOptions = $( '<div class="advancedSearch-fieldContainer">' )
-			.hide();
+	var $allOptions = $( '<div>' ).prop( { 'class': 'advancedSearch-fieldContainer' } );
 
 	for ( var group in optionSets ) {
 		$allOptions.append( optionSets[ group ].$element );
 	}
 
-	var advancedButton = new OO.ui.ButtonWidget( {
-		label: msg( 'advanced-search' )
-		// indicator: 'down'
-	} ).on( 'click', function () {
-		$allOptions.toggle();
-
-		if ( $allOptions.is( ':visible' ) ) {
-			advancedButton.setLabel( msg( 'advanced-search' ) );
-		} else {
-			advancedButton.setLabel( formatSearchOptions() || msg( 'advanced-search' ) );
-		}
-	} );
+	var $advancedButtonLabel = $( '<span>' ).prop( { 'class': 'advancedSearch-optionTags' } ),
+		advancedButton = new OO.ui.ButtonWidget( {
+			$label: $advancedButtonLabel,
+			label: msg( 'advanced-search' )
+			// indicator: 'down'
+		} );
 
 	var $advancedButton = advancedButton.$element.css( {
 		clear: 'both',
@@ -458,8 +453,27 @@
 	} );
 	$search.append( $advancedButton, $allOptions );
 
+	function updateAdvancedButtonLabel() {
+		$advancedButtonLabel.empty();
+		if ( !$allOptions.is( ':visible' ) ) {
+			var searchOptions = formatSearchOptions();
+			for ( var i = 0; i < searchOptions.length; i++ ) {
+				$advancedButtonLabel.append( $( '<span>' ).text( searchOptions[i] ) );
+			}
+		}
+		if ( $advancedButtonLabel.is( ':empty' ) ) {
+			$advancedButtonLabel.text( msg( 'advanced-search' ) );
+		}
+	}
+
+	updateAdvancedButtonLabel();
+	advancedButton.on( 'click', function () {
+		$allOptions.toggle();
+		updateAdvancedButtonLabel();
+	} );
+
 	$search.on( 'submit', function () {
-		var compiledQuery = formatSearchOptions( $searchField.val() ),
+		var compiledQuery = $.trim( $searchField.val() + ' ' + formatSearchOptions().join( ' ' ) ),
 			$compiledSearchField = $( '<input>' ).prop( {
 				name: $searchField.prop( 'name' ),
 				type: 'hidden'
