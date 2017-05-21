@@ -23,6 +23,7 @@
 }
 
 /* FIXME: Why does this try to mimic a <fieldset><legend> element instead of being an actual one? */
+/* See */
 .advancedSearch-fieldContainer .oo-ui-labelElement > .oo-ui-fieldsetLayout-header > .oo-ui-labelElement-label {
 	background: #fff;
 	color: #666;
@@ -33,6 +34,14 @@
 	padding: 0 0.2em;
 	position: relative;
 	top: -0.8em;
+}
+
+.advancedSearch-fieldContainer .oo-ui-fieldLayout.oo-ui-labelElement.oo-ui-fieldLayout-align-right > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header {
+	margin-right: 1%;
+}
+
+.advancedSearch-fieldContainer .oo-ui-fieldLayout.oo-ui-labelElement.oo-ui-fieldLayout-align-right > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-help {
+	float: right;
 }
 
 .advancedSearch-optionTags > span {
