@@ -1,4 +1,4 @@
-( function ( mw ) {
+( function ( mw, $ ) {
 	'use strict';
 
 	mw.libs = mw.libs || {};
@@ -47,8 +47,23 @@
 		return this.searchOptions[ optionId ];
 	};
 
+	/**
+	 * Get non-empty search options
+	 *
+	 * @return {Object}
+	 */
+	mw.libs.advancedSearch.dm.SearchModel.prototype.getOptions = function () {
+		var options = {};
+		$.each( this.searchOptions, function ( key, value ) {
+			if ( !$.isEmptyObject( value ) ) {
+				options[ key ] = value;
+			}
+		} );
+		return options;
+	};
+
 	mw.libs.advancedSearch.dm.SearchModel.prototype.toJSON = function () {
 		return JSON.stringify( this.searchOptions );
 	};
 
-} )( mediaWiki );
+} )( mediaWiki, jQuery );

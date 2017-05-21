@@ -116,7 +116,7 @@
 			id: 'plain',
 			placeholder: '…',
 			formatter: function ( val ) {
-				return optionalQuotes( val );
+				return val ;
 			}
 		},
 		{
@@ -399,7 +399,7 @@
 			files: 'Files and Images',
 			filetype: 'File type:',
 			filew: 'File width in pixels:',
-			fileh: 'File height in pixels:',
+			fileh: 'File height in pixels:'
 		}
 	};
 
@@ -509,15 +509,39 @@
 	} );
 	$search.append( $advancedButton, $allOptions );
 
+	/**
+	 * @param  {string|Array}  value
+	 * @return {string}
+	 */
+	function shortenWithEllipsis( value ) {
+		var maxlen = 5;
+		if ( $.isArray( value ) ) {
+			value = value.join( ', ' );
+		}
+		if ( value.length <= maxlen ) {
+			return value;
+		}
+		return value.substr( 0, 5 ).replace( /[,\s]+$/, '' ) + '…';
+	}
+
+	// FIXME make this "button" its own GUI class that does all the things described in mockup.
 	function updateAdvancedButtonLabel() {
 		$advancedButtonLabel.empty();
 		$advancedButtonLabel.text( msg( 'advanced-search' ) );
-		if ( !$allOptions.is( ':visible' ) ) {
-			var searchOptions = formatSearchOptions();
-			for ( var i = 0; i < searchOptions.length; i++ ) {
-				$advancedButtonLabel.append( $( '<span>' ).text( searchOptions[ i ] ) );
-			}
+		if ( $allOptions.is( ':visible' ) ) {
+			return;
 		}
+
+		// Display individual options
+		var searchOptions = state.getOptions();
+		advancedOptions.forEach( function ( option ) {
+			if ( !searchOptions[ option.id ] ) {
+				return;
+			}
+			var $label = $( '<span>' ).text( msg( option.id ) + shortenWithEllipsis( searchOptions[ option.id ] ) );
+			$label.attr( 'title', msg( option.id ) + ' ' + option.formatter( searchOptions[ option.id ] ) );
+			$advancedButtonLabel.append( $label );
+		} );
 	}
 
 	updateAdvancedButtonLabel();
