@@ -33,4 +33,14 @@
 		return mw.libs.advancedSearch.ui.ArbitraryWordInput.parent.prototype.doInputEnter.call( this );
 	};
 
+	/**
+	 * @inheritdoc
+	 */
+	mw.libs.advancedSearch.ui.ArbitraryWordInput.prototype.onInputBlur = function () {
+		if ( this.input.getValue() && $.trim( this.input.getValue() ) !== '' ) {
+			this.addTagFromInput();
+		}
+		return mw.libs.advancedSearch.ui.ArbitraryWordInput.parent.prototype.onInputBlur.call( this );
+	};
+
 } )( mediaWiki );
