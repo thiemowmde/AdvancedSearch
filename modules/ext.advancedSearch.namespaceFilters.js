@@ -206,7 +206,7 @@
 	$( '.search-types, #mw-search-togglebox, #mw-search-togglebox + .divider' )
 		.hide();
 
-	var namespaceItems = [],
+	var namespaceMenuItems = [],
 		selectedNamespaces = [];
 	$.each( mw.config.get( 'wgFormattedNamespaces' ), function ( ns, label ) {
 		// Cast to integer.
@@ -215,51 +215,69 @@
 		if ( ns < 0 ) {
 			return;
 		}
-		var icon = null;
-		if ( ns === 2 ) {
-			icon = 'userAvatar';
-		} else if ( ns === 3 ) {
-			icon = 'userTalk';
-		} else if ( ns === 6 ) {
-			icon = 'image';
-		} else if ( ns === 8 ) {
-			icon = 'language';
-		} else if ( ns === 10 || ns === 828 ) {
-			icon = 'puzzle';
-		} else if ( ns === 12 ) {
-			icon = 'help';
-		} else if ( label === 'Wikipedia' ) {
-			icon = 'logoWikipedia';
-		} else if ( ns % 2 ) {
-			icon = 'stripeSummary';
-		} else {
-			icon = 'article';
-		}
-		namespaceItems.push( new OO.ui.MenuOptionWidget( {
+		var option = {
 			data: ns,
 			label: label || msg( 'blanknamespace' ),
-			icon: icon
-		} ) );
+			icon: getNamespaceIcon( ns, label )
+		};
+		namespaceMenuItems.push( new OO.ui.MenuOptionWidget( option ) );
 
 		if ( mw.util.getParamValue( 'ns' + ns ) ) {
-			selectedNamespaces.push( ns );
+			selectedNamespaces.push( option );
 		}
 	} );
 
-	var multiselect = new OO.ui.CapsuleMultiselectWidget( {
-		menu: { items: namespaceItems },
+	var multiselect = new OO.ui.MenuTagMultiselectWidget( {
+		menu: { items: namespaceMenuItems },
 		placeholder: msg( 'add-namespace' )
 	} )
-	.addItemsFromData( selectedNamespaces )
-	.on( 'change', function ( values ) {
+	.on( 'change', function ( $menuOptions ) {
+		var selectedNamespaceMap = {};
+		$menuOptions.forEach( function ( $menuOption ) {
+			selectedNamespaceMap[ $menuOption.data ] = true;
+		} );
 		$( '#mw-searchoptions input[id^=mw-search-ns]' ).each( function ( index, checkbox ) {
 			var ns = checkbox.name.replace( /^\D+/, '' ) | 0;
-			checkbox.checked = values.indexOf( ns ) !== -1;
+			checkbox.checked = selectedNamespaceMap[ ns ] ? true : false;
 		} );
 	} );
-	multiselect.$element.css( {
-		'margin-top': '-1px'
+	// FIXME: I want to set "selected" in the constructor, but this crashs.
+	multiselect.setValue( selectedNamespaces );
+	// FIXME: Why does this menu appear open by default?
+	multiselect.menu.toggle( false );
+	multiselect.$element.children().first().css( {
+		'border-top': 0
 	} );
 	$presetsBar.after( multiselect.$element );
+
+	/**
+	 * @param {number} ns
+	 * @param {string} label
+	 * @return {string}
+	 */
+	function getNamespaceIcon( ns, label ) {
+		if ( label === 'Wikipedia' ) {
+			return 'logoWikipedia';
+		}
+
+		switch ( ns ) {
+			case 2:
+				return 'userAvatar';
+			case 3:
+				return 'userTalk';
+			case 6:
+				return 'image';
+			case 8:
+				return 'language';
+			case 10:
+				return 'puzzle';
+			case 12:
+				return 'help';
+			case 828:
+				return 'puzzle';
+		}
+
+		return ns % 2 ? 'stripeSummary' : 'article';
+	}
 
 } )( mediaWiki, jQuery );

@@ -12,24 +12,27 @@
 }
 
 .advancedSearch-fieldContainer .oo-ui-fieldLayout {
-	margin-top: .5em;
+	margin-top: 0.3em;
 }
 
+/* FIXME: Why is this border set on a "label" element and not on the <fieldset>? */
 .advancedSearch-fieldContainer fieldset.oo-ui-labelElement {
 	border: none;
 	border-top: solid 1px #c8ccd1;
+	margin-top: 1em;
 }
 
+/* FIXME: Why does this try to mimic a <fieldset><legend> element instead of being an actual one? */
 .advancedSearch-fieldContainer .oo-ui-labelElement > .oo-ui-fieldsetLayout-header > .oo-ui-labelElement-label {
+	background: #fff;
 	color: #666;
-	background: white;
-	position: relative;
-	top:-0.8em;
-	left: 1em;
-	padding:0.2em;
 	font-weight: normal;
 	font-size: 1em;
-	line-height:1.2em;
+	left: 1em;
+	line-height: 1;
+	padding: 0 0.2em;
+	position: relative;
+	top: -0.8em;
 }
 
 .advancedSearch-optionTags > span {
@@ -39,6 +42,6 @@
 	font-family: monospace;
 	font-size: 15px;
 	font-weight: normal;
-	margin-right: 0.5em;
+	margin-left: 0.5em;
 	padding: 0.1em 0.5em;
 }

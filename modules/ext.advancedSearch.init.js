@@ -356,7 +356,7 @@
 
 	var i18n = {
 		de: {
-			'advanced-search': 'Erweiterte Suchoptionen',
+			'advanced-search': 'Erweiterte Suchoptionen:',
 
 			text: 'Seite enthält …',
 			plain: 'Dieses Wort:',
@@ -380,7 +380,7 @@
 			fileres: 'Diagonalauflösung in Pixel:'
 		},
 		en: {
-			'advanced-search': 'Advanced Parameters',
+			'advanced-search': 'Advanced parameters:',
 
 			text: 'The page should include …',
 			plain: 'This word:',
