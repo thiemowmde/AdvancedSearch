@@ -356,6 +356,7 @@
 
 	var i18n = {
 		de: {
+			// FIXME: Quite some of these translation are now out of sync with the English ones.
 			'advanced-search': 'Erweiterte Suchoptionen:',
 
 			text: 'Seite enthält …',
@@ -365,15 +366,14 @@
 			not: 'Nicht dieses Wort:',
 
 			structure: 'Struktur',
-			hastemplate: 'Nur Seiten mit dieser Vorlage:',
-			insource: 'Suche im Wikitext:',
+			// FIXME: This description of what "prefix:" does is incorrect, and misleading.
 			prefix: 'Unterseiten von:',
 			intitle: 'Seitentitel enthält:',
 			deepcat: 'In dieser Kategorie:',
-			deepcat2: 'Zweite Kategorie zur Querschnittssuche:',
-			incategory: 'Nur direkt in dieser Kategorie:',
+			hastemplate: 'Nur Seiten mit dieser Vorlage:',
+			insource: 'Suche im Wikitext:',
 
-			files: 'Dateien',
+			files: 'Dateien und Bilder',
 			filetype: 'Dateien dieses Typs:',
 			filew: 'Dateibreite in Pixel:',
 			fileh: 'Dateihöhe in Pixel:',
@@ -385,19 +385,24 @@
 			text: 'The page should include …',
 			plain: 'This word:',
 			phrase: 'Exactly this text:',
+			// FIXME: This describes an OR concatenation, but not what the fuzzy search does.
 			fuzzy: 'One of those words:',
+			// FIXME: This is not only for words but also for phrases.
 			not: 'Not this word:',
 
 			structure: 'Structure',
+			// FIXME: This description of what "prefix:" does is incorrect, and misleading.
 			prefix: 'Subpages of this page:',
 			intitle: 'Page title contains:',
 			deepcat: 'Page in this category:',
 			hastemplate: 'Only pages with this template:',
-			incategory: 'Only in this category:',
+			// FIXME: Why doesn't this mention wikitext any more? Also wikitext is not "code".
 			insource: 'Source code contains:',
 
-			files: 'Files and Images',
+			// FIXME: Why does this need to mention both, like images are not files?
+			files: 'Files and images',
 			filetype: 'File type:',
+			// FIXME: How can a file that is not an image have a width and a height? Videos?
 			filew: 'File width in pixels:',
 			fileh: 'File height in pixels:'
 		}
@@ -455,13 +460,15 @@
 			return;
 		}
 
+		var paramName = 'advancedSearchOption-' + option.id;
+		state.storeOption( option.id, mw.util.getParamValue( paramName ) );
+
 		var widgetInit = option.init || function () {
-			var id = 'advancedSearchOption-' + option.id;
 			return new OO.ui.TextInputWidget( {
-				id: id,
+				id: paramName,
 				// TODO: These names are to long.
-				name: id,
-				value: mw.util.getParamValue( id )
+				name: paramName,
+				value: mw.util.getParamValue( paramName )
 			} );
 		},
 		widget = widgetInit();
@@ -510,18 +517,14 @@
 	$( '.mw-search-profile-tabs' ).before( $advancedButton, $allOptions );
 
 	/**
-	 * @param  {string|Array}  value
+	 * @param {string|string[]} value
 	 * @return {string}
 	 */
-	function shortenWithEllipsis( value ) {
-		var maxlen = 5;
-		if ( $.isArray( value ) ) {
-			value = value.join( ', ' );
+	function getFormattedElementCount( value ) {
+		if ( $.isArray( value ) && value.length >= 2 ) {
+			return ' (' + value.length + ')';
 		}
-		if ( value.length <= maxlen ) {
-			return value;
-		}
-		return value.substr( 0, 5 ).replace( /[,\s]+$/, '' ) + '…';
+		return '';
 	}
 
 	// FIXME make this "button" its own GUI class that does all the things described in mockup.
@@ -538,7 +541,10 @@
 			if ( !searchOptions[ option.id ] ) {
 				return;
 			}
-			var $label = $( '<span>' ).text( msg( option.id ) + shortenWithEllipsis( searchOptions[ option.id ] ) );
+			var $label = $( '<span>' ).text(
+				msg( option.id ).replace( /:$/, '' )
+					+ getFormattedElementCount( searchOptions[ option.id ] )
+			);
 			$label.attr( 'title', msg( option.id ) + ' ' + option.formatter( searchOptions[ option.id ] ) );
 			$advancedButtonLabel.append( $label );
 		} );

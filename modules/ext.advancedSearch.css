@@ -44,13 +44,17 @@
 	float: right;
 }
 
+.advancedSearch-optionTags {
+	white-space: normal;
+}
+
 .advancedSearch-optionTags > span {
 	background: rgba(255, 255, 255, 0.6);
+	border: 1px solid #a2a9b1;
 	border-radius: 2px;
-	box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
-	font-family: monospace;
+	display: inline-block;
 	font-size: 15px;
 	font-weight: normal;
-	margin-left: 0.5em;
+	margin: 0.1em 0.2em;
 	padding: 0.1em 0.5em;
 }
