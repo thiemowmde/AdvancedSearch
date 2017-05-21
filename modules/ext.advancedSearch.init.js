@@ -507,7 +507,7 @@
 		display: 'block',
 		'text-align': 'left'
 	} );
-	$search.append( $advancedButton, $allOptions );
+	$( '.mw-search-profile-tabs' ).before( $advancedButton, $allOptions );
 
 	/**
 	 * @param  {string|Array}  value
