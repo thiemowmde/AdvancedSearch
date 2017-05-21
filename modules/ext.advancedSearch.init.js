@@ -113,6 +113,14 @@
 		// Text
 		{
 			group: 'text',
+			id: 'plain',
+			placeholder: '…',
+			formatter: function ( val ) {
+				return optionalQuotes( val );
+			}
+		},
+		{
+			group: 'text',
 			id: 'phrase',
 			placeholder: '"…"',
 			formatter: function ( val ) {
@@ -135,14 +143,6 @@
 		},
 		{
 			group: 'text',
-			id: 'fuzzy',
-			placeholder: '…~2',
-			formatter: function ( val ) {
-				return optionalQuotes( val ) + '~2';
-			}
-		},
-		{
-			group: 'text',
 			id: 'not',
 			placeholder: '-…',
 			formatter: function ( val ) {
@@ -151,6 +151,45 @@
 		},
 		{
 			group: 'text',
+			id: 'fuzzy',
+			placeholder: '…~2',
+			formatter: function ( val ) {
+				return optionalQuotes( val ) + '~2';
+			}
+		},
+
+		// Structure
+		{
+			group: 'structure',
+			id: 'prefix',
+			placeholder: 'prefix:…',
+			formatter: function ( val ) {
+				return 'prefix:' + val;
+			},
+			greedy: true
+		},
+		{
+			group: 'structure',
+			id: 'intitle',
+			placeholder: 'intitle:…',
+			formatter: function ( val ) {
+				return 'intitle:' + optionalQuotes( val );
+			}
+		},
+		{
+			group: 'structure',
+			id: 'deepcat',
+			placeholder: 'deepcat:…',
+			/* enabled: function () {
+			 return !!mw.libs.deepCat;
+			 }, */
+			formatter: function ( val ) {
+				return 'deepcat:' + optionalQuotes( val );
+			}
+		},
+
+		{
+			group: 'structure',
 			id: 'hastemplate',
 			placeholder: 'hastemplate:…',
 			formatter: function ( val ) {
@@ -171,7 +210,7 @@
 			}
 		},
 		{
-			group: 'text',
+			group: 'structure',
 			id: 'insource',
 			placeholder: 'insource:…',
 			formatter: function ( val ) {
@@ -179,50 +218,19 @@
 			}
 		},
 
-		// Titles and headlines
-		// local:…
-		{
-			group: 'title',
-			id: 'prefix',
-			placeholder: 'prefix:…',
-			formatter: function ( val ) {
-				return 'prefix:' + val;
-			},
-			greedy: true
-		},
-		{
-			group: 'title',
-			id: 'intitle',
-			placeholder: 'intitle:…',
-			formatter: function ( val ) {
-				return 'intitle:' + optionalQuotes( val );
-			}
-		},
-
-		// Categories
-		{
-			group: 'categories',
-			id: 'deepcat',
-			placeholder: 'deepcat:…',
-			/* enabled: function () {
-			 return !!mw.libs.deepCat;
-			 }, */
-			formatter: function ( val ) {
-				return 'deepcat:' + optionalQuotes( val );
-			}
-		},
+		/*
 		{
 			group: 'categories',
 			id: 'deepcat2',
 			placeholder: 'deepcat:…',
 			/* enabled: function () {
 			 return !!mw.libs.deepCat;
-			 }, */
+			 },
 			formatter: function ( val ) {
 				return 'deepcat:' + optionalQuotes( val );
 			}
 		},
-		/* {
+		{
 			group: 'categories',
 			id: 'incategory',
 			placeholder: 'incategory:…',
@@ -350,19 +358,18 @@
 		de: {
 			'advanced-search': 'Erweiterte Suchoptionen',
 
-			text: 'Text',
-			phrase: 'Genau diese Wortgruppe:',
+			text: 'Seite enthält …',
+			plain: 'Dieses Wort:',
+			phrase: 'Genau diesen Text:',
 			fuzzy: 'Ungefähr dieses Wort:',
 			not: 'Nicht dieses Wort:',
+
+			structure: 'Struktur',
 			hastemplate: 'Nur Seiten mit dieser Vorlage:',
 			insource: 'Suche im Wikitext:',
-
-			title: 'Titel',
-			prefix: 'Seitentitel beginnt mit:',
+			prefix: 'Unterseiten von:',
 			intitle: 'Seitentitel enthält:',
-
-			categories: 'Kategorien',
-			deepcat: 'In dieser oder tieferer Kategorie:',
+			deepcat: 'In dieser Kategorie:',
 			deepcat2: 'Zweite Kategorie zur Querschnittssuche:',
 			incategory: 'Nur direkt in dieser Kategorie:',
 
@@ -373,29 +380,26 @@
 			fileres: 'Diagonalauflösung in Pixel:'
 		},
 		en: {
-			'advanced-search': 'Advanced search options',
+			'advanced-search': 'Advanced Parameters',
 
-			text: 'Text',
-			phrase: 'Exactly this phrase:',
-			fuzzy: 'Approximately this word:',
+			text: 'The page should include …',
+			plain: 'This word:',
+			phrase: 'Exactly this text:',
+			fuzzy: 'One of those words:',
 			not: 'Not this word:',
-			hastemplate: 'Only pages with this template:',
-			insource: 'Search in wikitext source:',
 
-			title: 'Title',
-			prefix: 'Page title starts with:',
+			structure: 'Structure',
+			prefix: 'Subpages of this page:',
 			intitle: 'Page title contains:',
-
-			categories: 'Categories',
-			deepcat: 'In this or deeper category:',
-			deepcat2: 'Second category to intersect with:',
+			deepcat: 'Page in this category:',
+			hastemplate: 'Only pages with this template:',
 			incategory: 'Only in this category:',
+			insource: 'Source code contains:',
 
-			files: 'Files',
+			files: 'Files and Images',
 			filetype: 'File type:',
 			filew: 'File width in pixels:',
 			fileh: 'File height in pixels:',
-			fileres: 'Diagonal resolution in pixels:'
 		}
 	};
 
@@ -472,7 +476,8 @@
 		optionSets[ option.group ].addItems( [
 			new OO.ui.FieldLayout( widget, {
 				label: msg( option.id ),
-				align: 'right'
+				align: 'right',
+				help: msg( option.id +  '_help' )
 			} )
 		] );
 	} );
@@ -506,14 +511,12 @@
 
 	function updateAdvancedButtonLabel() {
 		$advancedButtonLabel.empty();
+		$advancedButtonLabel.text( msg( 'advanced-search' ) );
 		if ( !$allOptions.is( ':visible' ) ) {
 			var searchOptions = formatSearchOptions();
 			for ( var i = 0; i < searchOptions.length; i++ ) {
 				$advancedButtonLabel.append( $( '<span>' ).text( searchOptions[ i ] ) );
 			}
-		}
-		if ( $advancedButtonLabel.is( ':empty' ) ) {
-			$advancedButtonLabel.text( msg( 'advanced-search' ) );
 		}
 	}
 
