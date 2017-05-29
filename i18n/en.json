@@ -3,5 +3,9 @@
 		"authors": [
 		]
 	},
-	"advancedsearch-desc": "Easy access to advanced search capabilities on [[Special:Search]]"
+	"advancedsearch-desc": "Easy access to advanced search capabilities on [[Special:Search]]",
+	"advancedsearch-filetype-preset-image": "Images",
+	"advancedsearch-filetype-preset-video": "Videos",
+	"advancedsearch-filetype-preset-sound": "Audio",
+	"advancedsearch-filetype-preset-document": "Documents"
 }

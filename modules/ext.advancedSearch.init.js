@@ -314,6 +314,12 @@
 				} );
 				return types;
 			},
+			init: function () {
+				return new mw.libs.advancedSearch.ui.FileTypeSelection(
+					state,
+					{ }
+				);
+			},
 			requiredNamespace: 6
 		},
 		{

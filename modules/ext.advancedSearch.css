@@ -58,3 +58,8 @@
 	margin: 0.1em 0.2em;
 	padding: 0.1em 0.5em;
 }
+
+.advancedSearch-filetype-presets .oo-ui-multioptionWidget {
+	display: inline-block;
+	margin-right: 1em; /* TODO margin-left for LTR? */
+}

@@ -52,15 +52,8 @@
 				"ext.advancedSearch.dm.MenuDataModel",
 				"ext.advancedSearch.dm.SearchModel",
 				"ext.advancedSearch.ui.ArbitraryWordInput",
+				"ext.advancedSearch.ui.FileTypeSelection",
 				"ext.advancedSearch.ui.MenuedInput"
-			]
-		},
-		"ext.advancedSearch.ui.MenuedInput": {
-			"scripts": [
-				"modules/ui/ext.advancedSearch.MenuedInput.js"
-			],
-			"dependencies": [
-				"oojs-ui"
 			]
 		},
 		"ext.advancedSearch.ui.ArbitraryWordInput": {
@@ -69,6 +62,28 @@
 			],
 			"dependencies": [
 				"oojs-ui"
+			]
+		},
+		"ext.advancedSearch.ui.FileTypeSelection": {
+			"scripts": [
+				"modules/ui/ext.advancedSearch.FileTypeSelection.js"
+			],
+			"dependencies": [
+				"oojs-ui"
+			]
+		},
+		"ext.advancedSearch.ui.MenuedInput": {
+			"scripts": [
+				"modules/ui/ext.advancedSearch.MenuedInput.js"
+			],
+			"dependencies": [
+				"oojs-ui"
+			],
+			"messages": [
+				"advancedsearch-filetype-preset-image",
+				"advancedsearch-filetype-preset-video",
+				"advancedsearch-filetype-preset-sound",
+				"advancedsearch-filetype-preset-document"
 			]
 		},
 		"ext.advancedSearch.dm.SearchModel": {
