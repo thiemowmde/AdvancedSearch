@@ -17,75 +17,75 @@
 		var myConfig = $.extend( {
 			options: [
 				{
-					"optgroup": mw.msg( 'advancedsearch-filetype-section-types' )
+					optgroup: mw.msg( 'advancedsearch-filetype-section-types' )
 				},
 				{
-					"data": "bitmap",
-					"label": mw.msg( 'advancedsearch-filetype-bitmap' ),
+					data: 'bitmap',
+					label: mw.msg( 'advancedsearch-filetype-bitmap' )
 				},
 				{
-					"data": "vector",
-					"label": mw.msg( 'advancedsearch-filetype-vector' ),
+					data: 'vector',
+					label: mw.msg( 'advancedsearch-filetype-vector' )
 				},
 				{
-					"data": "video",
-					"label": mw.msg( 'advancedsearch-filetype-video' ),
+					data: 'video',
+					label: mw.msg( 'advancedsearch-filetype-video' )
 				},
 				{
-					"data": "audio",
-					"label": mw.msg( 'advancedsearch-filetype-audio' ),
+					data: 'audio',
+					label: mw.msg( 'advancedsearch-filetype-audio' )
 				},
 				{
-					"data": "multimedia",
-					"label": mw.msg( 'advancedsearch-filetype-multimedia' ),
+					data: 'multimedia',
+					label: mw.msg( 'advancedsearch-filetype-multimedia' )
 				},
 				{
-					"data": "document",
-					"label": mw.msg( 'advancedsearch-filetype-document' ),
-				},
-
-				{
-					"optgroup": mw.msg( 'advancedsearch-filetype-section-image' )
-				},
-				{
-					"data": "jpeg",
-					"label": mw.msg( 'advancedsearch-filetype-bitmap-jpeg' ),
-				},
-				{
-					"data": "tiff",
-					"label": mw.msg( 'advancedsearch-filetype-bitmap-tiff' ),
-				},
-				{
-					"data": "svg",
-					"label": mw.msg( 'advancedsearch-filetype-vector-svg' ),
+					data: 'document',
+					label: mw.msg( 'advancedsearch-filetype-document' )
 				},
 
 				{
-					"optgroup": mw.msg( 'advancedsearch-filetype-section-sound' )
+					optgroup: mw.msg( 'advancedsearch-filetype-section-image' )
 				},
 				{
-					"data": "jpeg",
-					"label": mw.msg( 'advancedsearch-filetype-audio-wav' ),
+					data: 'jpeg',
+					label: mw.msg( 'advancedsearch-filetype-bitmap-jpeg' )
 				},
 				{
-					"data": "tiff",
-					"label": mw.msg( 'advancedsearch-filetype-audio-flac' ),
+					data: 'tiff',
+					label: mw.msg( 'advancedsearch-filetype-bitmap-tiff' )
 				},
 				{
-					"data": "svg",
-					"label": mw.msg( 'advancedsearch-filetype-audio-midi' ),
+					data: 'svg',
+					label: mw.msg( 'advancedsearch-filetype-vector-svg' )
 				},
 
 				{
-					"optgroup": mw.msg( 'advancedsearch-filetype-section-document' )
+					optgroup: mw.msg( 'advancedsearch-filetype-section-sound' )
 				},
 				{
-					"data": "pdf",
-					"label": mw.msg( 'advancedsearch-filetype-document-pdf' ),
+					data: 'jpeg',
+					label: mw.msg( 'advancedsearch-filetype-audio-wav' )
 				},
 				{
-					"data": "office",
-					"label": mw.msg( 'advancedsearch-filetype-document-office' ),
+					data: 'tiff',
+					label: mw.msg( 'advancedsearch-filetype-audio-flac' )
+				},
+				{
+					data: 'svg',
+					label: mw.msg( 'advancedsearch-filetype-audio-midi' )
+				},
+
+				{
+					optgroup: mw.msg( 'advancedsearch-filetype-section-document' )
+				},
+				{
+					data: 'pdf',
+					label: mw.msg( 'advancedsearch-filetype-document-pdf' )
+				},
+				{
+					data: 'office',
+					label: mw.msg( 'advancedsearch-filetype-document-office' )
 				}
 			]
 		}, config );
