@@ -7,7 +7,7 @@
 
 	/**
 	 * @class
-	 * @extends {OO.ui.DropdownWidget}
+	 * @extends {OO.ui.DropdownInputWidget}
 	 * @constructor
 	 *
 	 * @param  {ext.advancedSearch.dm.SearchModel} store
@@ -15,100 +15,105 @@
 	 */
 	mw.libs.advancedSearch.ui.FileTypeSelection = function ( store, config ) {
 		var myConfig = $.extend( {
-			'menu': {
-				items: [
-					new OO.ui.MenuSectionOptionWidget( {
-						"label": mw.msg( 'advancedsearch-filetype-section-types' )
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "bitmap",
-						"label": mw.msg( 'advancedsearch-filetype-bitmap' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "vector",
-						"label": mw.msg( 'advancedsearch-filetype-vector' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "video",
-						"label": mw.msg( 'advancedsearch-filetype-video' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "audio",
-						"label": mw.msg( 'advancedsearch-filetype-audio' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "multimedia",
-						"label": mw.msg( 'advancedsearch-filetype-multimedia' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "document",
-						"label": mw.msg( 'advancedsearch-filetype-document' ),
-					} ),
+			options: [
+				{
+					"optgroup": mw.msg( 'advancedsearch-filetype-section-types' )
+				},
+				{
+					"data": "bitmap",
+					"label": mw.msg( 'advancedsearch-filetype-bitmap' ),
+				},
+				{
+					"data": "vector",
+					"label": mw.msg( 'advancedsearch-filetype-vector' ),
+				},
+				{
+					"data": "video",
+					"label": mw.msg( 'advancedsearch-filetype-video' ),
+				},
+				{
+					"data": "audio",
+					"label": mw.msg( 'advancedsearch-filetype-audio' ),
+				},
+				{
+					"data": "multimedia",
+					"label": mw.msg( 'advancedsearch-filetype-multimedia' ),
+				},
+				{
+					"data": "document",
+					"label": mw.msg( 'advancedsearch-filetype-document' ),
+				},
 
-					new OO.ui.MenuSectionOptionWidget( {
-						"label": mw.msg( 'advancedsearch-filetype-section-image' )
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "jpeg",
-						"label": mw.msg( 'advancedsearch-filetype-bitmap-jpeg' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "tiff",
-						"label": mw.msg( 'advancedsearch-filetype-bitmap-tiff' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "svg",
-						"label": mw.msg( 'advancedsearch-filetype-vector-svg' ),
-					} ),
+				{
+					"optgroup": mw.msg( 'advancedsearch-filetype-section-image' )
+				},
+				{
+					"data": "jpeg",
+					"label": mw.msg( 'advancedsearch-filetype-bitmap-jpeg' ),
+				},
+				{
+					"data": "tiff",
+					"label": mw.msg( 'advancedsearch-filetype-bitmap-tiff' ),
+				},
+				{
+					"data": "svg",
+					"label": mw.msg( 'advancedsearch-filetype-vector-svg' ),
+				},
 
-					new OO.ui.MenuSectionOptionWidget( {
-						"label": mw.msg( 'advancedsearch-filetype-section-sound' )
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "jpeg",
-						"label": mw.msg( 'advancedsearch-filetype-audio-wav' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "tiff",
-						"label": mw.msg( 'advancedsearch-filetype-audio-flac' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "svg",
-						"label": mw.msg( 'advancedsearch-filetype-audio-midi' ),
-					} ),
+				{
+					"optgroup": mw.msg( 'advancedsearch-filetype-section-sound' )
+				},
+				{
+					"data": "jpeg",
+					"label": mw.msg( 'advancedsearch-filetype-audio-wav' ),
+				},
+				{
+					"data": "tiff",
+					"label": mw.msg( 'advancedsearch-filetype-audio-flac' ),
+				},
+				{
+					"data": "svg",
+					"label": mw.msg( 'advancedsearch-filetype-audio-midi' ),
+				},
 
-					new OO.ui.MenuSectionOptionWidget( {
-						"label": mw.msg( 'advancedsearch-filetype-section-document' )
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "jpeg",
-						"label": mw.msg( 'advancedsearch-filetype-document-pdf' ),
-					} ),
-					new OO.ui.MenuOptionWidget( {
-						"data": "tiff",
-						"label": mw.msg( 'advancedsearch-filetype-document-office' ),
-					} )
-				]
-			}
+				{
+					"optgroup": mw.msg( 'advancedsearch-filetype-section-document' )
+				},
+				{
+					"data": "pdf",
+					"label": mw.msg( 'advancedsearch-filetype-document-pdf' ),
+				},
+				{
+					"data": "office",
+					"label": mw.msg( 'advancedsearch-filetype-document-office' ),
+				}
+			]
 		}, config );
 		this.store = store;
+		this.optionId = config.optionId;
 
 		store.connect( this, { update: 'onStoreUpdate' } );
 
 		// Parent constructor
 		mw.libs.advancedSearch.ui.FileTypeSelection.parent.call( this, myConfig );
 
-		this.populateFromStore();
+		this.setValueFromStore();
 	};
 
-	OO.inheritClass( mw.libs.advancedSearch.ui.FileTypeSelection, OO.ui.DropdownWidget );
+	OO.inheritClass( mw.libs.advancedSearch.ui.FileTypeSelection, OO.ui.DropdownInputWidget );
 
 	mw.libs.advancedSearch.ui.FileTypeSelection.prototype.onStoreUpdate = function () {
-		this.populateFromStore();
+		this.setValueFromStore();
 	};
 
-	mw.libs.advancedSearch.ui.FileTypeSelection.prototype.populateFromStore = function () {
-		// TODO
+	mw.libs.advancedSearch.ui.FileTypeSelection.prototype.setValueFromStore = function () {
+		var storeValue = this.store.getOption( this.optionId ),
+			selectedItem = this.dropdownWidget.getMenu().getItemFromData( storeValue );
+		// avoid setting invalid values and re-triggering
+		if ( selectedItem === null || selectedItem.getData() === storeValue ) {
+			return;
+		}
+		this.setValue( storeValue );
 	};
 
 } )( mediaWiki );

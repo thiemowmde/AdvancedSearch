@@ -247,77 +247,43 @@
 			id: 'filetype',
 			placeholder: 'filetype:…',
 			formatter: function ( val ) {
-				var types = '';
-				val.split( ',' ).forEach( function ( type ) {
-					type = $.trim( type ).replace( /\W+/g, '/' ).replace( /^\w*\W+(?=\w{3})/, '' ).toLowerCase();
-					switch ( type ) {
-						case '':
-							break;
+				switch ( val ) {
 
-						// Individual file types with non-standard alternatives
-						case 'bitmap':
-						case 'image':
-						case 'bild':
-							types += 'filetype:bitmap';
-							break;
-						case 'audio':
-						case 'music':
-						case 'musik':
-							types += 'filetype:audio';
-							break;
-						case 'drawing':
-						case 'vector':
-						case 'vektor':
-						case 'zeichnung':
-							types += 'filetype:drawing';
-							break;
+					case 'bitmap':
+					case 'audio':
+					case 'drawing':
+					case 'multimedia':
+					case 'office':
+					case 'video':
+						return 'filetype:' + val;
 
-						// Other known file types
-						case 'multimedia':
-						case 'office':
-						case 'video':
-							types += 'filetype:' + type;
-							break;
+					// Individual MIME types
+					case 'flac':
+					case 'mid':
+					case 'wav':
+						return 'filemime:audio/' + val;
 
-						// Individual MIME types with non-standard alternatives
-						case 'flac':
-							types += 'filemime:audio/flac';
-							break;
-						case 'midi':
-						case 'mid':
-							types += 'filemime:audio/midi';
-							break;
-						case 'wav':
-						case 'wave':
-							types += 'filemime:audio/wav';
-							break;
-						case 'jpg':
-							types += 'filemime:image/jpeg';
-							break;
-						case 'tif':
-							types += 'filemime:image/tiff';
-							break;
-						case 'svg':
-						case 'xml':
-							types += 'filemime:xml/svg';
-							break;
+					case 'jpeg':
+					case 'tiff':
+						return 'filemime:image/' + val;
 
-						// Other known MIME types
-						case 'ogg':
-						case 'pdf':
-							types += 'filemime:application/' + type;
-							break;
-						default:
-							types += 'filemime:' + ( /\W/.test( type ) ? type : 'image/' + type );
-							break;
-					}
-				} );
-				return types;
+					case 'svg':
+						return 'filemime:xml/svg';
+
+					// Other known MIME types
+					case 'ogg':
+					case 'pdf':
+						return 'filemime:application/' + val;
+				}
+				return '';
 			},
 			init: function () {
 				return new mw.libs.advancedSearch.ui.FileTypeSelection(
 					state,
-					{ }
+					{
+						optionId: 'filetype',
+						name: 'advancedSearchOption-filetype'
+					}
 				);
 			},
 			requiredNamespace: 6
@@ -467,6 +433,8 @@
 		}
 
 		var paramName = 'advancedSearchOption-' + option.id;
+
+		// FIXME: this overrides values from the JSON in the store. Find a way to synchronize both.
 		state.storeOption( option.id, mw.util.getParamValue( paramName ) );
 
 		var widgetInit = option.init || function () {
