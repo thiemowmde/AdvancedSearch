@@ -4,8 +4,23 @@
 		]
 	},
 	"advancedsearch-desc": "Easy access to advanced search capabilities on [[Special:Search]]",
-	"advancedsearch-filetype-preset-image": "Images",
-	"advancedsearch-filetype-preset-video": "Videos",
-	"advancedsearch-filetype-preset-sound": "Audio",
-	"advancedsearch-filetype-preset-document": "Documents"
+	"advancedsearch-filetype-section-types": "General file type",
+	"advancedsearch-filetype-section-image": "Image format",
+	"advancedsearch-filetype-section-video": "Video format",
+	"advancedsearch-filetype-section-sound": "Audio Format",
+	"advancedsearch-filetype-section-document": "Document format",
+	"advancedsearch-filetype-bitmap": "Image",
+	"advancedsearch-filetype-vector": "Drawing",
+	"advancedsearch-filetype-audio": "Audio",
+	"advancedsearch-filetype-video": "Video",
+	"advancedsearch-filetype-multimedia": "Multimedia",
+	"advancedsearch-filetype-document": "Document",
+	"advancedsearch-filetype-bitmap-jpeg": "JPEG",
+	"advancedsearch-filetype-bitmap-tiff": "TIFF",
+	"advancedsearch-filetype-vector-svg": "SVG",
+	"advancedsearch-filetype-audio-midi": "Midi",
+	"advancedsearch-filetype-audio-wav": "WAV",
+	"advancedsearch-filetype-audio-flac": "FLAC",
+	"advancedsearch-filetype-document-office": "Office",
+	"advancedsearch-filetype-document-pdf": "PDF"
 }

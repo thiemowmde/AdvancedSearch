@@ -80,10 +80,25 @@
 				"oojs-ui"
 			],
 			"messages": [
-				"advancedsearch-filetype-preset-image",
-				"advancedsearch-filetype-preset-video",
-				"advancedsearch-filetype-preset-sound",
-				"advancedsearch-filetype-preset-document"
+				"advancedsearch-filetype-section-types",
+				"advancedsearch-filetype-section-image",
+				"advancedsearch-filetype-section-video",
+				"advancedsearch-filetype-section-sound",
+				"advancedsearch-filetype-section-document",
+				"advancedsearch-filetype-bitmap",
+				"advancedsearch-filetype-vector",
+				"advancedsearch-filetype-audio",
+				"advancedsearch-filetype-video",
+				"advancedsearch-filetype-multimedia",
+				"advancedsearch-filetype-document",
+				"advancedsearch-filetype-bitmap-jpeg",
+				"advancedsearch-filetype-bitmap-tiff",
+				"advancedsearch-filetype-vector-svg",
+				"advancedsearch-filetype-audio-midi",
+				"advancedsearch-filetype-audio-wav",
+				"advancedsearch-filetype-audio-flac",
+				"advancedsearch-filetype-document-office",
+				"advancedsearch-filetype-document-pdf"
 			]
 		},
 		"ext.advancedSearch.dm.SearchModel": {

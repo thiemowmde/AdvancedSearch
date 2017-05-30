@@ -7,55 +7,101 @@
 
 	/**
 	 * @class
-	 * @extends {OO.ui.Widget}
+	 * @extends {OO.ui.DropdownWidget}
 	 * @constructor
 	 *
 	 * @param  {ext.advancedSearch.dm.SearchModel} store
 	 * @param  {Object} config
 	 */
 	mw.libs.advancedSearch.ui.FileTypeSelection = function ( store, config ) {
-		config = config || {};
+		var myConfig = $.extend( {
+			'menu': {
+				items: [
+					new OO.ui.MenuSectionOptionWidget( {
+						"label": mw.msg( 'advancedsearch-filetype-section-types' )
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "bitmap",
+						"label": mw.msg( 'advancedsearch-filetype-bitmap' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "vector",
+						"label": mw.msg( 'advancedsearch-filetype-vector' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "video",
+						"label": mw.msg( 'advancedsearch-filetype-video' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "audio",
+						"label": mw.msg( 'advancedsearch-filetype-audio' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "multimedia",
+						"label": mw.msg( 'advancedsearch-filetype-multimedia' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "document",
+						"label": mw.msg( 'advancedsearch-filetype-document' ),
+					} ),
+
+					new OO.ui.MenuSectionOptionWidget( {
+						"label": mw.msg( 'advancedsearch-filetype-section-image' )
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "jpeg",
+						"label": mw.msg( 'advancedsearch-filetype-bitmap-jpeg' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "tiff",
+						"label": mw.msg( 'advancedsearch-filetype-bitmap-tiff' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "svg",
+						"label": mw.msg( 'advancedsearch-filetype-vector-svg' ),
+					} ),
+
+					new OO.ui.MenuSectionOptionWidget( {
+						"label": mw.msg( 'advancedsearch-filetype-section-sound' )
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "jpeg",
+						"label": mw.msg( 'advancedsearch-filetype-audio-wav' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "tiff",
+						"label": mw.msg( 'advancedsearch-filetype-audio-flac' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "svg",
+						"label": mw.msg( 'advancedsearch-filetype-audio-midi' ),
+					} ),
+
+					new OO.ui.MenuSectionOptionWidget( {
+						"label": mw.msg( 'advancedsearch-filetype-section-document' )
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "jpeg",
+						"label": mw.msg( 'advancedsearch-filetype-document-pdf' ),
+					} ),
+					new OO.ui.MenuOptionWidget( {
+						"data": "tiff",
+						"label": mw.msg( 'advancedsearch-filetype-document-office' ),
+					} )
+				]
+			}
+		}, config );
 		this.store = store;
-		this.optionId = config.optionId;
 
 		store.connect( this, { update: 'onStoreUpdate' } );
 
 		// Parent constructor
-		mw.libs.advancedSearch.ui.FileTypeSelection.parent.call( this, config );
-
-		var $presetContainer =  $( '<div class="advancedSearch-filetype-presets"></div>' ),
-			$filetypeContainer = $( '<div class="advancedSearch-filetype-selection"></div>' );
-
-		this.$element.append( $presetContainer ).append( $filetypeContainer );
-		this.presets = new OO.ui.CheckboxMultiselectInputWidget( {
-			options: [
-				{ data: 'image', label: mw.msg( 'advancedsearch-filetype-preset-image' ) },
-				{ data: 'video', label: mw.msg( 'advancedsearch-filetype-preset-video' ) },
-				{ data: 'sound', label: mw.msg( 'advancedsearch-filetype-preset-sound' ) },
-				{ data: 'document', label: mw.msg( 'advancedsearch-filetype-preset-document' ) }
-			]
-		} );
-		this.fileTypeInput = new OO.ui.MenuTagMultiselectWidget( {
-			options: [
-				{ data: 'bitmap', label: 'Bitmap' },
-				{ data: 'drawing', label: 'Drawing' },
-				{ data: 'video', label: 'Video' },
-				{ data: 'audio', label: 'Audio' }
-			]
-		} );
-		$presetContainer.append( this.presets.$element );
-		$filetypeContainer.append( this.fileTypeInput.$element );
-
+		mw.libs.advancedSearch.ui.FileTypeSelection.parent.call( this, myConfig );
 
 		this.populateFromStore();
 	};
 
-	OO.inheritClass( mw.libs.advancedSearch.ui.FileTypeSelection, OO.ui.Widget );
-
-	mw.libs.advancedSearch.ui.FileTypeSelection.prototype.onPresetChange = function ( evt ) {
-		console.log("Presets changed", evt);
-		// TODO update store
-	};
+	OO.inheritClass( mw.libs.advancedSearch.ui.FileTypeSelection, OO.ui.DropdownWidget );
 
 	mw.libs.advancedSearch.ui.FileTypeSelection.prototype.onStoreUpdate = function () {
 		this.populateFromStore();
