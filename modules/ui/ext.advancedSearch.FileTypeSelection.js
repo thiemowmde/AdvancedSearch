@@ -92,10 +92,10 @@
 		this.store = store;
 		this.optionId = config.optionId;
 
-		store.connect( this, { update: 'onStoreUpdate' } );
-
 		// Parent constructor
 		mw.libs.advancedSearch.ui.FileTypeSelection.parent.call( this, myConfig );
+
+		store.connect( this, { update: 'onStoreUpdate' } );
 
 		this.setValueFromStore();
 	};
@@ -110,7 +110,7 @@
 		var storeValue = this.store.getOption( this.optionId ),
 			selectedItem = this.dropdownWidget.getMenu().getItemFromData( storeValue );
 		// avoid setting invalid values and re-triggering
-		if ( selectedItem === null || selectedItem.getData() === storeValue ) {
+		if ( selectedItem === null || this.getValue() === storeValue ) {
 			return;
 		}
 		this.setValue( storeValue );

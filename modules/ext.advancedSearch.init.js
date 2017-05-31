@@ -81,11 +81,15 @@
 	}
 
 	/**
+	 * @param {string} prefix
 	 * @param {string} val
 	 * @return {string}
 	 */
-	function formatSizeConstraint( val ) {
-		return val.replace( /[\s.]+/g, '' ).replace( /(\d)\D+(?=\d)/g, '$1,' );
+	function formatSizeConstraint( prefix, val ) {
+		if ( !$.isArray( val ) || val.length < 2 || $.trim( val[ 1 ] ) === '' ) {
+			return '';
+		}
+		return prefix + val.join( '' );
 	}
 
 	/**
@@ -109,12 +113,6 @@
 		};
 	}
 
-	var fileTypesWithWidthAndHeight = [
-		'bitmap',
-		'jpeg',
-		'tiff'
-	];
-
 	function createOptionalFieldLayout( widget, option ) {
 		return new mw.libs.advancedSearch.ui.OptionalElementLayout(
 			state,
@@ -124,7 +122,7 @@
 				align: 'right',
 				help: msg( option.id +  '_help' ),
 				checkVisibility: function () {
-					return fileTypesWithWidthAndHeight.indexOf( state.getOption( 'filetype' ) ) > -1;
+					return state.filetypeSupportsDimensions();
 				}
 			}
 		);
@@ -314,9 +312,17 @@
 			id: 'filew',
 			placeholder: 'filew:…',
 			formatter: function ( val ) {
-				return 'filew:' + formatSizeConstraint( val );
+				return formatSizeConstraint( 'filew:', val );
 			},
 			requiredNamespace: 6,
+			init: function () {
+				return new mw.libs.advancedSearch.ui.ImageDimensionInput(
+					state,
+					{
+						optionId: 'filew'
+					}
+				);
+			},
 			layout: createOptionalFieldLayout
 		},
 		{
@@ -324,9 +330,17 @@
 			id: 'fileh',
 			placeholder: 'fileh:…',
 			formatter: function ( val ) {
-				return 'fileh:' + formatSizeConstraint( val );
+				return formatSizeConstraint( 'fileh:', val );
 			},
 			requiredNamespace: 6,
+			init: function () {
+				return new mw.libs.advancedSearch.ui.ImageDimensionInput(
+					state,
+					{
+						optionId: 'fileh'
+					}
+				);
+			},
 			layout: createOptionalFieldLayout
 		}
 		/* {
@@ -421,19 +435,23 @@
 			greedyQuery = null;
 
 		advancedOptions.forEach( function ( option ) {
-			var val = state.getOption( option.id );
+			var val = state.getOption( option.id ),
+				formattedQueryElement = val ? option.formatter( val ) : '';
 
-			if ( val ) {
-				// FIXME: Should fail if there is more than one greedy option!
-				if ( option.greedy && !greedyQuery ) {
-					greedyQuery = option.formatter( val );
-				} else {
-					queryElements.push( option.formatter( val ) );
-				}
+			if ( !formattedQueryElement ) {
+				return;
+			}
 
-				if ( option.requiredNamespace ) {
-					$( '#mw-search-ns' + option.requiredNamespace ).prop( 'checked', true );
-				}
+			// FIXME: Should fail if there is more than one greedy option!
+			if ( option.greedy && !greedyQuery ) {
+				greedyQuery = option.formatter( val );
+			} else {
+				queryElements.push();
+			}
+
+			// FIXME: This does not work when the advanced namespace field was changed by the user.
+			if ( option.requiredNamespace ) {
+				$( '#mw-search-ns' + option.requiredNamespace ).prop( 'checked', true );
 			}
 		} );
 
@@ -456,9 +474,6 @@
 		}
 
 		var paramName = 'advancedSearchOption-' + option.id;
-
-		// FIXME: this overrides values from the JSON in the store. Find a way to synchronize both.
-		state.storeOption( option.id, mw.util.getParamValue( paramName ) );
 
 		var widgetInit = option.init || function () {
 			return new OO.ui.TextInputWidget( {

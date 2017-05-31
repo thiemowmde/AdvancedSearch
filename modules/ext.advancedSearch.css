@@ -63,3 +63,14 @@
 	display: inline-block;
 	margin-right: 1em; /* TODO margin-left for LTR? */
 }
+
+.advancedSearch-filesize .operator-container,
+.advancedSearch-filesize .value-container {
+	width: 50%;
+	float: left;
+	box-sizing: border-box;
+}
+
+.advancedSearch-filesize .operator-container {
+	padding-right: 1em;
+}

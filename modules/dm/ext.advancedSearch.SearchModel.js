@@ -5,6 +5,14 @@
 	mw.libs.advancedSearch = mw.libs.advancedSearch || {};
 	mw.libs.advancedSearch.dm = mw.libs.advancedSearch.dm || {};
 
+	// Internal constants
+	var FILETYPES_WITH_DIMENSIONS = [
+		'bitmap',
+		'video',
+		'jpeg',
+		'tiff'
+	];
+
 	/**
 	 * @class
 	 * @constructor
@@ -38,8 +46,12 @@
 	 * @param  {mixed} value
 	 */
 	mw.libs.advancedSearch.dm.SearchModel.prototype.storeOption = function ( optionId, value ) {
-		// TODO check for allwed options?
+		// TODO check for allowed options?
 		this.searchOptions[ optionId ] = value;
+		if ( optionId == 'filetype' && !this.filetypeSupportsDimensions() ) {
+			this.searchOptions.filew = [ '>', '' ];
+			this.searchOptions.fileh = [ '>', '' ];
+		}
 		this.emit( 'update' );
 	};
 
@@ -64,6 +76,15 @@
 
 	mw.libs.advancedSearch.dm.SearchModel.prototype.toJSON = function () {
 		return JSON.stringify( this.searchOptions );
+	};
+
+	/**
+	 * Check if the selected file type supports dimensions
+	 *
+	 * @return {boolean}
+	 */
+	mw.libs.advancedSearch.dm.SearchModel.prototype.filetypeSupportsDimensions = function () {
+		return FILETYPES_WITH_DIMENSIONS.indexOf( this.getOption( 'filetype' ) ) > -1;
 	};
 
 } )( mediaWiki, jQuery );
