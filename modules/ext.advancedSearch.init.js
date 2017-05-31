@@ -109,6 +109,27 @@
 		};
 	}
 
+	var fileTypesWithWidthAndHeight = [
+		'bitmap',
+		'jpeg',
+		'tiff'
+	];
+
+	function createOptionalFieldLayout( widget, option ) {
+		return new mw.libs.advancedSearch.ui.OptionalElementLayout(
+			state,
+			widget,
+			{
+				label: msg( option.id ),
+				align: 'right',
+				help: msg( option.id +  '_help' ),
+				checkVisibility: function () {
+					return fileTypesWithWidthAndHeight.indexOf( state.getOption( 'filetype' ) ) > -1;
+				}
+			}
+		);
+	}
+
 	var advancedOptions = [
 		// Text
 		{
@@ -295,7 +316,8 @@
 			formatter: function ( val ) {
 				return 'filew:' + formatSizeConstraint( val );
 			},
-			requiredNamespace: 6
+			requiredNamespace: 6,
+			layout: createOptionalFieldLayout
 		},
 		{
 			group: 'files',
@@ -304,7 +326,8 @@
 			formatter: function ( val ) {
 				return 'fileh:' + formatSizeConstraint( val );
 			},
-			requiredNamespace: 6
+			requiredNamespace: 6,
+			layout: createOptionalFieldLayout
 		}
 		/* {
 			group: 'files',
@@ -454,13 +477,17 @@
 			} );
 		}
 
-		optionSets[ option.group ].addItems( [
-			new OO.ui.FieldLayout( widget, {
+		var layout;
+		if ( option.layout ) {
+			layout = option.layout( widget, option );
+		} else {
+			layout = new OO.ui.FieldLayout( widget, {
 				label: msg( option.id ),
 				align: 'right',
 				help: msg( option.id +  '_help' )
-			} )
-		] );
+			} );
+		}
+		optionSets[ option.group ].addItems( [ layout ] );
 	} );
 
 	var $allOptions = $( '<div>' ).prop( { 'class': 'advancedSearch-fieldContainer' } );

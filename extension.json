@@ -53,7 +53,8 @@
 				"ext.advancedSearch.dm.SearchModel",
 				"ext.advancedSearch.ui.ArbitraryWordInput",
 				"ext.advancedSearch.ui.FileTypeSelection",
-				"ext.advancedSearch.ui.MenuedInput"
+				"ext.advancedSearch.ui.MenuedInput",
+				"ext.advancedSearch.ui.OptionalElementLayout"
 			]
 		},
 		"ext.advancedSearch.ui.ArbitraryWordInput": {
@@ -99,6 +100,14 @@
 				"advancedsearch-filetype-audio-flac",
 				"advancedsearch-filetype-document-office",
 				"advancedsearch-filetype-document-pdf"
+			]
+		},
+		"ext.advancedSearch.ui.OptionalElementLayout": {
+			"scripts": [
+				"modules/ui/ext.advancedSearch.OptionalElementLayout.js"
+			],
+			"dependencies": [
+				"oojs-ui"
 			]
 		},
 		"ext.advancedSearch.dm.SearchModel": {
