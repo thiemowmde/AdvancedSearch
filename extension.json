@@ -72,22 +72,6 @@
 			],
 			"dependencies": [
 				"oojs-ui"
-			]
-		},
-		"ext.advancedSearch.ui.ImageDimensionInput": {
-			"scripts": [
-				"modules/ui/ext.advancedSearch.ImageDimensionInput.js"
-			],
-			"dependencies": [
-				"oojs-ui"
-			]
-		},
-		"ext.advancedSearch.ui.MenuedInput": {
-			"scripts": [
-				"modules/ui/ext.advancedSearch.MenuedInput.js"
-			],
-			"dependencies": [
-				"oojs-ui"
 			],
 			"messages": [
 				"advancedsearch-filetype-section-types",
@@ -109,6 +93,27 @@
 				"advancedsearch-filetype-audio-flac",
 				"advancedsearch-filetype-document-office",
 				"advancedsearch-filetype-document-pdf"
+			]
+		},
+		"ext.advancedSearch.ui.ImageDimensionInput": {
+			"scripts": [
+				"modules/ui/ext.advancedSearch.ImageDimensionInput.js"
+			],
+			"dependencies": [
+				"oojs-ui"
+			],
+			"messages": [
+				"advancedSearch-filesize-equals",
+				"advancedSearch-filesize-greater-than",
+				"advancedSearch-filesize-smaller-than"
+			]
+		},
+		"ext.advancedSearch.ui.MenuedInput": {
+			"scripts": [
+				"modules/ui/ext.advancedSearch.MenuedInput.js"
+			],
+			"dependencies": [
+				"oojs-ui"
 			]
 		},
 		"ext.advancedSearch.ui.OptionalElementLayout": {

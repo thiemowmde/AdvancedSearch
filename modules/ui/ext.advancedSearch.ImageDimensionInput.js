@@ -29,9 +29,9 @@
 		this.operatorInput = new OO.ui.DropdownInputWidget( {
 			options: [
 				// TODO translate
-				{ data: '', label: 'equal to' },
-				{ data: '>', label: 'greater than' },
-				{ data: '<', label: 'lower than' }
+				{ data: '', label: mw.msg( 'advancedSearch-filesize-equals' ) },
+				{ data: '>', label: mw.msg( 'advancedSearch-filesize-greater-than' ) },
+				{ data: '<', label: mw.msg( 'advancedSearch-filesize-smaller-than' ) }
 			],
 			value: '>'
 		} );

@@ -23,5 +23,8 @@
 	"advancedsearch-filetype-audio-wav": "WAV",
 	"advancedsearch-filetype-audio-flac": "FLAC",
 	"advancedsearch-filetype-document-office": "Office",
-	"advancedsearch-filetype-document-pdf": "PDF"
+	"advancedsearch-filetype-document-pdf": "PDF",
+	"advancedSearch-filesize-equals": "equal to",
+	"advancedSearch-filesize-greater-than": "greater than",
+	"advancedSearch-filesize-smaller-than": "lower than"
 }

@@ -23,5 +23,8 @@
 	"advancedsearch-filetype-audio-wav": "Label for WAV file/mime type",
 	"advancedsearch-filetype-audio-flac": "Label for FLAC file/mime type",
 	"advancedsearch-filetype-document-office": "Label for Office file/mime type",
-	"advancedsearch-filetype-document-pdf": "Label for PDF file/mime type"
+	"advancedsearch-filetype-document-pdf": "Label for PDF file/mime type",
+	"advancedSearch-filesize-equals": "Label for the file width/height 'equals' comparator selection",
+	"advancedSearch-filesize-greater-than": "Label for the file width/height 'greater than' comparator selection",
+	"advancedSearch-filesize-smaller-than": "Label for the file width/height 'smaller than' comparator selection"
 }
