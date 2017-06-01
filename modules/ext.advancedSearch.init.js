@@ -563,6 +563,9 @@
 			if ( !option.id.match( /^file[hw]$/ ) ) {
 				labeltext += getFormattedElementCount( searchOptions[ option.id ] );
 			} else {
+				if ( $.trim( searchOptions[ option.id ][ 1 ] ) === '' ) {
+					return;
+				}
 				labeltext += ' ' + searchOptions[ option.id ][ 0 ] + ' ' + searchOptions[ option.id ][ 1 ] + 'px';
 			}
 			var $label = $( '<span>' ).text( labeltext );
