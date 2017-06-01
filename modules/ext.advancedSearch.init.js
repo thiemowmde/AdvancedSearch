@@ -557,10 +557,15 @@
 			if ( !searchOptions[ option.id ] ) {
 				return;
 			}
-			var $label = $( '<span>' ).text(
-				msg( option.id ).replace( /:$/, '' )
-					+ getFormattedElementCount( searchOptions[ option.id ] )
-			);
+			var labeltext = msg( option.id ).replace( /:$/, '' );
+
+			// TODO remove special case, create pill formatters for each search option
+			if ( !option.id.match( /^file[hw]$/ ) ) {
+				labeltext += getFormattedElementCount( searchOptions[ option.id ] );
+			} else {
+				labeltext += ' ' + searchOptions[ option.id ][ 0 ] + ' ' + searchOptions[ option.id ][ 1 ] + 'px';
+			}
+			var $label = $( '<span>' ).text( labeltext );
 			$label.attr( 'title', msg( option.id ) + ' ' + option.formatter( searchOptions[ option.id ] ) );
 			$advancedButtonLabel.append( $label );
 		} );
