@@ -518,19 +518,14 @@
 			indicator: 'down'
 		} );
 
-	var $advancedButton = advancedButton.$element.css( {
-		clear: 'both',
-		display: 'block',
-		margin: 0,
-		'max-width': '50em',
-		'padding-top': '0.3em',
-		position: 'relative'
-	} );
+	var $advancedButton = advancedButton.$element.addClass( 'advancedSearch-advancedButton' );
 	$advancedButton.children().css( {
 		display: 'block',
 		'text-align': 'left'
 	} );
 	$( '.mw-search-profile-tabs' ).before( $advancedButton, $allOptions );
+	var pane = new mw.libs.advancedSearch.ui.FormPane( state, {} );
+	$advancedButton.before( pane.$element ); // TODO remove this, when advancedButton is gone
 
 	/**
 	 * @param {string|string[]} value

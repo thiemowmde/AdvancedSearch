@@ -44,6 +44,21 @@
 	float: right;
 }
 
+.advancedSearch-advancedButton, /* TODO Remove advancedButton when FormPane is finished */
+.advancedSearch-filterBar {
+	clear: both;
+	display: block;
+	margin: 0;
+	max-width: 50em;
+	padding-top: 0.3em;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.advancedSearch-previewLabel.oo-ui.widget-enabled {
+	background: white;
+}
+
 .advancedSearch-optionTags {
 	white-space: normal;
 }
