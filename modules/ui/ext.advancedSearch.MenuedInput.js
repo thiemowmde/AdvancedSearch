@@ -51,12 +51,22 @@
 		menu.addItems( items );
 	};
 
+	function arrayEquals( a1, a2 ) {
+		var i = a1.length;
+		while ( i-- ) {
+			if ( a1[ i ] !== a2[ i ] ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	mw.libs.advancedSearch.ui.MenuedInput.prototype.populateFromStore = function () {
 		var self = this,
 			selected = this.store.getOption( this.optionId ),
 			menu = this.dataSource.getMenuItems();
 
-		if ( !selected ) {
+		if ( !selected || arrayEquals( selected, this.getValue() ) ) {
 			return;
 		}
 
